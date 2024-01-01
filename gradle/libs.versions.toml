@@ -1,0 +1,42 @@
+[versions]
+activityCompose = "1.8.2"
+androidCompileSdk = "34"
+androidCore = "1.12.0"
+androidMinSdk = "24"
+androidTargetSdk = "34"
+androidGradlePlugin = "8.2.0"
+composeBom = "2023.10.01"
+composeCompiler = "1.5.4"
+composeMultiplatform = "1.5.11"
+kotlin = "1.9.20"
+kotlinpoet = "1.15.3"
+ktlint = "0.50.0"
+spotless = "6.22.0"
+
+[libraries]
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+
+androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+androidx-compose-composeBom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-compose-uiGraphics = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-compose-uiTooling = { module = "androidx.compose.ui:ui-tooling" }
+androidx-compose-uiToolingPreview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "androidCore" }
+
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+spotless-gradlePlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
+
+squareup-kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
+
+xpp3 = { module = "xpp3:xpp3", version = "1.1.4c" }
+xmlpull = { module = "xmlpull:xmlpull", version = "1.1.3.1" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
+kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

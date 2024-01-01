@@ -1,0 +1,7 @@
+*.iml
+/.idea/
+/build/
+/convention/build/
+/local.properties
+.gradle
+/imagevectorgenerator/build/
