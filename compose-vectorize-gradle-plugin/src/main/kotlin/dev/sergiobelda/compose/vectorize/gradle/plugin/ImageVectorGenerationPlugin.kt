@@ -66,7 +66,7 @@ open class ImageVectorGenerationPlugin : Plugin<Project> {
     private fun Project.registerImageVectorGenerationTask(
         extension: ImageVectorGenerationPluginExtension,
         buildDirectory: File,
-        generatedSrcMain: String
+        generatedSrcMain: String,
     ) = tasks.register(TASK_NAME, ImageVectorGenerationTask::class.java) {
         this.packageName = extension.packageName.get()
         this.buildDirectory = buildDirectory

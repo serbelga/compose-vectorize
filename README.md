@@ -1,3 +1,28 @@
+# Compose Vectorize
+
+A Kotlin Multiplatform library to generate `compose.ui.graphics.vector.ImageVector` from 
+XML files. This library has the same behavior as AndroidX `material-icons` vector generator.
+
+Converts the XML files located in the `xml-images` folder and creates categories based on the folder division.
+
+## Android
+
+```kotlin
+plugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("dev.sergiobelda.compose-vectorize")
+}
+
+dependencies {
+    implementation("dev.sergiobelda.compose.vectorize:compose-vectorize-core:$VERSION")
+}
+
+composeVectorize {
+    packageName = "dev.example.myproject" // Custom package name
+}
+```
+
 ## Multiplatform
 
 ```kotlin
@@ -5,16 +30,22 @@ plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
     id("dev.sergiobelda.compose-vectorize")
-```
+}
 
-```kotlin
+kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation(compose.ui)
-                implementation("dev.sergiobelda.compose.vectorize:compose-vectorize-core")
+                implementation("dev.sergiobelda.compose.vectorize:compose-vectorize-core$VERSION")
             }
         }
+    }
+}
+
+composeVectorize {
+    packageName = "dev.example.myproject" // Custom package name
+}
 ```
 
 ## License
