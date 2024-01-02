@@ -19,9 +19,11 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.androidLibrary)
     id("dev.sergiobelda.compose-vectorize-spotless")
+    `maven-publish`
 }
 
 group = "dev.sergiobelda.compose.vectorize"
+version = libs.versions.composeVectorize.get()
 
 kotlin {
     androidTarget()
@@ -69,5 +71,13 @@ android {
 
     kotlin {
         jvmToolchain(17)
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+
+        }
     }
 }

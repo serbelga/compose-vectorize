@@ -16,10 +16,12 @@
 
 plugins {
     `kotlin-dsl`
+    alias(libs.plugins.gradlePublish)
     id("dev.sergiobelda.compose-vectorize-spotless")
 }
 
 group = "dev.sergiobelda.compose.vectorize"
+version = libs.versions.composeVectorize.get()
 
 java {
     toolchain {

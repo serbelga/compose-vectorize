@@ -16,10 +16,12 @@
 
 plugins {
     `kotlin-dsl`
+    alias(libs.plugins.gradlePublish)
     id("dev.sergiobelda.compose-vectorize-spotless")
 }
 
 group = "dev.sergiobelda.compose.vectorize"
+version = libs.versions.composeVectorize.get()
 
 java {
     toolchain {
@@ -34,11 +36,16 @@ dependencies {
 }
 
 gradlePlugin {
+    website.set("https://github.com/serbelga/compose-vectorize")
+    vcsUrl.set("https://github.com/serbelga/compose-vectorize")
     plugins {
         create("compose-vectorize") {
             id = "dev.sergiobelda.compose-vectorize"
             implementationClass =
                 "dev.sergiobelda.compose.vectorize.gradle.plugin.ImageVectorGenerationPlugin"
+            displayName = "Compose Vectorize"
+            description = "Gradle plugin to generate ImageVectors from XML files."
+            tags.set(listOf("imagevector", "compose", "xml", "vector"))
         }
     }
 }
