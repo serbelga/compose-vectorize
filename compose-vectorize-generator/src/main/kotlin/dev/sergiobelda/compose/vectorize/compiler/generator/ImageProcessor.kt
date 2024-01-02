@@ -43,7 +43,7 @@ class ImageProcessor(
             .forEach { entry ->
                 throw IllegalStateException(
                     """Found multiple images with the same case-insensitive filename:
-                        | ${entry.value.joinToString()}. Generating images with the same
+                        | ${entry.value.firstOrNull()?.xmlFileName}. Generating images with the same
                         | case-insensitive filename will cause issues on devices without
                         | a case sensitive filesystem (OSX / Windows).
                         """.trimMargin(),
@@ -57,9 +57,9 @@ class ImageProcessor(
         categoryPath: String,
     ) {
         if (isDirectory) {
-            val c = categoryPath.plus(".${name.toKotlinPropertyName()}")
+            val category = categoryPath.plus("${name.toKotlinPropertyName()}.")
             listFiles()?.forEach { child ->
-                child.getImages(images, c)
+                child.getImages(images, category)
             }
         } else {
             val filename = nameWithoutExtension
@@ -76,42 +76,6 @@ class ImageProcessor(
             )
         }
     }
-
-    /*private fun loadImages(): List<Image> =
-        imagesDirectories.flatMap { dir ->
-            val images = dir.walk().filter { !it.isDirectory }.toList()
-
-            val transformedImages = images.map { file ->
-                val filename = file.nameWithoutExtension
-                val kotlinName = filename.toKotlinPropertyName()
-
-                val fileContent = file.readText()
-                Image(
-                    kotlinName = kotlinName,
-                    packageName = packageName,
-                    categoryName = dir.name.toKotlinPropertyName(),
-                    xmlFileName = filename,
-                    fileContent = processXmlFile(fileContent),
-                )
-            }
-
-            // Ensure image names are unique when accounting for case insensitive filesystems -
-            // workaround for b/216295020
-            transformedImages
-                .groupBy { it.kotlinName.lowercase(Locale.ROOT) }
-                .filter { it.value.size > 1 }
-                .forEach { entry ->
-                    throw IllegalStateException(
-                        """Found multiple images with the same case-insensitive filename:
-                        | ${entry.value.joinToString()}. Generating images with the same
-                        | case-insensitive filename will cause issues on devices without
-                        | a case sensitive filesystem (OSX / Windows).
-                        """.trimMargin(),
-                    )
-                }
-
-            transformedImages
-        }*/
 }
 
 /**
