@@ -27,7 +27,57 @@ class ImageProcessor(
 
     fun process(): List<Image> = loadImages()
 
-    private fun loadImages(): List<Image> =
+    private fun loadImages(): List<Image> {
+        val images = mutableListOf<Image>()
+        imagesDirectories.forEach { file ->
+            file.getImages(
+                images,
+                ""
+            )
+        }
+
+        // Ensure image names are unique when accounting for case insensitive filesystems
+        images
+            .groupBy { it.kotlinName.lowercase(Locale.ROOT) }
+            .filter { it.value.size > 1 }
+            .forEach { entry ->
+                throw IllegalStateException(
+                    """Found multiple images with the same case-insensitive filename:
+                        | ${entry.value.joinToString()}. Generating images with the same
+                        | case-insensitive filename will cause issues on devices without
+                        | a case sensitive filesystem (OSX / Windows).
+                        """.trimMargin(),
+                )
+            }
+        return images
+    }
+
+    private fun File.getImages(
+        images: MutableList<Image>,
+        categoryPath: String,
+    ) {
+        if (isDirectory) {
+            val c = categoryPath.plus(".${name.toKotlinPropertyName()}")
+            listFiles()?.forEach { child ->
+                child.getImages(images, c)
+            }
+        } else {
+            val filename = nameWithoutExtension
+            val kotlinName = filename.toKotlinPropertyName()
+            val fileContent = readText()
+            images.add(
+                Image(
+                    kotlinName = kotlinName,
+                    packageName = packageName,
+                    categoryName = categoryPath.toKotlinPropertyName(),
+                    xmlFileName = filename,
+                    fileContent = processXmlFile(fileContent),
+                )
+            )
+        }
+    }
+
+    /*private fun loadImages(): List<Image> =
         imagesDirectories.flatMap { dir ->
             val images = dir.walk().filter { !it.isDirectory }.toList()
 
@@ -61,7 +111,7 @@ class ImageProcessor(
                 }
 
             transformedImages
-        }
+        }*/
 }
 
 /**

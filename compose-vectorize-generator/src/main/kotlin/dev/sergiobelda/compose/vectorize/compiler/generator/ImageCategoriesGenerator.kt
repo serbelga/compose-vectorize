@@ -18,15 +18,21 @@ package dev.sergiobelda.compose.vectorize.compiler.generator
 
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
+import dev.sergiobelda.compose.vectorize.compiler.generator.utils.toKotlinPropertyName
+import java.io.File
 
 class ImageCategoriesGenerator(
     private val imageCategoriesPackageName: String,
-    private val categories: List<String>,
+    private val categories: List<File>,
 ) {
 
     fun createFileSpec(): FileSpec {
         val builder = createImagesFileSpecBuilder()
-        builder.addType(createImagesTypeSpecBuilder(categories).build())
+        val imagesType = TypeSpec.objectBuilder(Images)
+        imagesType.addImagesCategoriesTypeSpec(
+            categories
+        )
+        builder.addType(imagesType.build())
         return builder.build()
     }
 
@@ -37,14 +43,19 @@ class ImageCategoriesGenerator(
         )
     }
 
-    private fun createImagesTypeSpecBuilder(
-        categories: List<String>,
-    ): TypeSpec.Builder =
-        TypeSpec.objectBuilder(Images).addTypes(
-            categories.map {
-                TypeSpec.objectBuilder(it).build()
-            },
-        )
+    // TODO: Rename
+    private fun TypeSpec.Builder.addImagesCategoriesTypeSpec(files: List<File>): TypeSpec.Builder {
+        files.forEach { file ->
+            if (file.isDirectory) {
+                val type = TypeSpec.objectBuilder(file.name.toKotlinPropertyName())
+                type.addImagesCategoriesTypeSpec(
+                    file.listFiles()?.toList() ?: emptyList()
+                )
+                addType(type.build())
+            }
+        }
+        return this
+    }
 
     private companion object {
         // TODO: Make Images string dynamic.

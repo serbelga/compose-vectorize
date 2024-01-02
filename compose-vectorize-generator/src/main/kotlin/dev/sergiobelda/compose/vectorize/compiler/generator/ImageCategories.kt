@@ -16,7 +16,9 @@
 
 package dev.sergiobelda.compose.vectorize.compiler.generator
 
+import java.io.File
+
 data class ImageCategories(
-    val categories: List<String>,
+    val categories: List<File>,
     val packageName: String,
 )

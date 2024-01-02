@@ -28,9 +28,7 @@ class ImageCategoriesProcessor(
 
     private fun loadImageCategories(): ImageCategories =
         ImageCategories(
-            categories = imagesDirectories.map {
-                it.name.toKotlinPropertyName()
-            },
+            categories = imagesDirectories,
             packageName = packageName,
         )
 }
