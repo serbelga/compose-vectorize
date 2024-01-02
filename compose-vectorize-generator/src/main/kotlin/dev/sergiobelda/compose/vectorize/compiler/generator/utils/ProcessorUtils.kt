@@ -37,6 +37,6 @@ internal fun String.toKotlinPropertyName(): String {
 
     // If the first character is a digit, prefix the name with an "_".
     return name.let {
-        if (it.first().isDigit()) "_$it" else it.uppercaseFirstChar()
+        if (it.firstOrNull()?.isDigit() == true) "_$it" else it.uppercaseFirstChar()
     }
 }

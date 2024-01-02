@@ -33,16 +33,18 @@ class ImageWriter(private val images: List<Image>) {
         outputSrcDirectory: File,
     ) {
         images.forEach { image ->
-            val vector = ImageParser(image).parse()
+            if (image.fileContent.isNotEmpty()) {
+                val vector = ImageParser(image).parse()
 
-            val fileSpec = ImageVectorGenerator(
-                image.kotlinName,
-                image.packageName,
-                image.categoryName,
-                vector,
-            ).createFileSpec()
+                val fileSpec = ImageVectorGenerator(
+                    image.kotlinName,
+                    image.packageName,
+                    image.categoryName,
+                    vector,
+                ).createFileSpec()
 
-            fileSpec.writeTo(outputSrcDirectory)
+                fileSpec.writeTo(outputSrcDirectory)
+            }
         }
     }
 }
