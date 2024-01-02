@@ -38,7 +38,7 @@ class ImageProcessor(
 
         // Ensure image names are unique when accounting for case insensitive filesystems
         images
-            .groupBy { it.kotlinName.lowercase(Locale.ROOT) }
+            .groupBy { it.categoryName.plus(it.kotlinName.lowercase(Locale.ROOT)) }
             .filter { it.value.size > 1 }
             .forEach { entry ->
                 throw IllegalStateException(
