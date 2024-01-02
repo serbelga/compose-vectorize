@@ -68,12 +68,13 @@ open class ImageVectorGenerationPlugin : Plugin<Project> {
         buildDirectory: File,
         generatedSrcMain: String,
     ) = tasks.register(TASK_NAME, ImageVectorGenerationTask::class.java) {
-        this.packageName = extension.packageName.get()
+        this.packageName = extension.packageName.getOrElse(DEFAULT_PACKAGE_NAME)
         this.buildDirectory = buildDirectory
         this.generatedSrcMain = generatedSrcMain
     }
 
     private companion object {
+        const val DEFAULT_PACKAGE_NAME = "dev.sergiobelda.compose.vectorize.images"
         const val EXTENSION_PLUGIN_NAME = "composeVectorize"
         const val IMAGES_RELATIVE_PATH = "images"
         const val TASK_NAME = "generateImages"

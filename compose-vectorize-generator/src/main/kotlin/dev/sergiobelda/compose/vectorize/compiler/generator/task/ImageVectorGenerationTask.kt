@@ -24,7 +24,7 @@ import dev.sergiobelda.compose.vectorize.compiler.generator.ImageProcessor
 import dev.sergiobelda.compose.vectorize.compiler.generator.ImageWriter
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.CacheableTask
-import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
@@ -36,7 +36,7 @@ import java.io.File
 open class ImageVectorGenerationTask : DefaultTask() {
 
     @PathSensitive(PathSensitivity.RELATIVE)
-    @InputDirectory
+    @InputFiles
     val imagesDirectory = project.projectDir.resolve("xml-images")
 
     @Internal
