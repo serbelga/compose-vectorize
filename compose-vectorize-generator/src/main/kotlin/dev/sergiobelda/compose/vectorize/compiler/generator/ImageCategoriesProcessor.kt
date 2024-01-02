@@ -16,7 +16,6 @@
 
 package dev.sergiobelda.compose.vectorize.compiler.generator
 
-import dev.sergiobelda.compose.vectorize.compiler.generator.utils.toKotlinPropertyName
 import java.io.File
 
 class ImageCategoriesProcessor(

@@ -28,9 +28,11 @@ internal fun String.toKotlinPropertyName(): String {
     // e.g. "_a" -> "A", "--a" -> "A", "__1" -> "_1", "--1" -> "_1"
     val pattern = "[_-]+[a-z0-9]".toRegex()
     val name = replace(pattern) { match ->
-        if (match.value.last().isDigit())
+        if (match.value.last().isDigit()) {
             "_${match.value.last()}"
-        else match.value.last().uppercase()
+        } else {
+            match.value.last().uppercase()
+        }
     }
 
     // If the first character is a digit, prefix the name with an "_".

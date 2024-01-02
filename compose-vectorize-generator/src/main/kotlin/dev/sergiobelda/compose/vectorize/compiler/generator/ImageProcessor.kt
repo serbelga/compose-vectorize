@@ -30,10 +30,7 @@ class ImageProcessor(
     private fun loadImages(): List<Image> {
         val images = mutableListOf<Image>()
         imagesDirectories.forEach { file ->
-            file.getImages(
-                images,
-                ""
-            )
+            images.addImages(file)
         }
 
         // Ensure image names are unique when accounting for case insensitive filesystems
@@ -46,33 +43,33 @@ class ImageProcessor(
                         | ${entry.value.firstOrNull()?.xmlFileName}. Generating images with the same
                         | case-insensitive filename will cause issues on devices without
                         | a case sensitive filesystem (OSX / Windows).
-                        """.trimMargin(),
+                    """.trimMargin(),
                 )
             }
         return images
     }
 
-    private fun File.getImages(
-        images: MutableList<Image>,
-        categoryPath: String,
+    private fun MutableList<Image>.addImages(
+        file: File,
+        categoryPath: String = ""
     ) {
-        if (isDirectory) {
-            val category = categoryPath.plus("${name.toKotlinPropertyName()}.")
-            listFiles()?.forEach { child ->
-                child.getImages(images, category)
+        if (file.isDirectory) {
+            val category = categoryPath.plus("${file.name.toKotlinPropertyName()}.")
+            file.listFiles()?.forEach { child ->
+                addImages(child, category)
             }
         } else {
-            val filename = nameWithoutExtension
+            val filename = file.nameWithoutExtension
             val kotlinName = filename.toKotlinPropertyName()
-            val fileContent = readText()
-            images.add(
+            val fileContent = file.readText()
+            add(
                 Image(
                     kotlinName = kotlinName,
                     packageName = packageName,
                     categoryName = categoryPath.toKotlinPropertyName(),
                     xmlFileName = filename,
                     fileContent = processXmlFile(fileContent),
-                )
+                ),
             )
         }
     }

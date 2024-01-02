@@ -30,7 +30,7 @@ class ImageCategoriesGenerator(
         val builder = createImagesFileSpecBuilder()
         val imagesType = TypeSpec.objectBuilder(Images)
         imagesType.addImagesCategoriesTypeSpec(
-            categories
+            categories,
         )
         builder.addType(imagesType.build())
         return builder.build()
@@ -49,7 +49,7 @@ class ImageCategoriesGenerator(
             if (file.isDirectory) {
                 val type = TypeSpec.objectBuilder(file.name.toKotlinPropertyName())
                 type.addImagesCategoriesTypeSpec(
-                    file.listFiles()?.toList() ?: emptyList()
+                    file.listFiles()?.toList() ?: emptyList(),
                 )
                 addType(type.build())
             }
