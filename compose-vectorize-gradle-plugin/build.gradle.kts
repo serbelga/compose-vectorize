@@ -40,7 +40,7 @@ gradlePlugin {
     vcsUrl.set("https://github.com/serbelga/compose-vectorize")
     plugins {
         create("compose-vectorize") {
-            id = "dev.sergiobelda.compose-vectorize"
+            id = "dev.sergiobelda.compose.vectorize"
             implementationClass =
                 "dev.sergiobelda.compose.vectorize.gradle.plugin.ImageVectorGenerationPlugin"
             displayName = "Compose Vectorize"
