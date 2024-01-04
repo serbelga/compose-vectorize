@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.compose.vectorize.compiler.generator.utils
+package dev.sergiobelda.compose.vectorize.generator.utils
 
 import com.squareup.kotlinpoet.FileSpec
 

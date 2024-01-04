@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.compose.vectorize.compiler.generator
+package dev.sergiobelda.compose.vectorize.generator
 
-import dev.sergiobelda.compose.vectorize.compiler.generator.vector.FillType
-import dev.sergiobelda.compose.vectorize.compiler.generator.vector.PathParser
-import dev.sergiobelda.compose.vectorize.compiler.generator.vector.Vector
-import dev.sergiobelda.compose.vectorize.compiler.generator.vector.VectorNode
+import dev.sergiobelda.compose.vectorize.generator.vector.FillType
+import dev.sergiobelda.compose.vectorize.generator.vector.PathParser
+import dev.sergiobelda.compose.vectorize.generator.vector.Vector
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParser.END_DOCUMENT
 import org.xmlpull.v1.XmlPullParser.END_TAG

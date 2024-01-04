@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.compose.vectorize.compiler.generator.vector
+package dev.sergiobelda.compose.vectorize.generator.vector
 
 import kotlin.math.min
 

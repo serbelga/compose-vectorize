@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.compose.vectorize.compiler.generator
+package dev.sergiobelda.compose.vectorize.generator
 
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
-import dev.sergiobelda.compose.vectorize.compiler.generator.utils.toKotlinPropertyName
+import dev.sergiobelda.compose.vectorize.generator.utils.toKotlinPropertyName
 import java.io.File
 
 class ImageCategoriesGenerator(

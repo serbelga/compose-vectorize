@@ -14,11 +14,20 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.compose.vectorize.compiler.generator
+package dev.sergiobelda.compose.vectorize.generator
 
 import java.io.File
 
-data class ImageCategories(
-    val categories: List<File>,
-    val packageName: String,
-)
+class ImageCategoriesProcessor(
+    private val packageName: String,
+    private val imagesDirectories: List<File>,
+) {
+
+    fun process(): ImageCategories = loadImageCategories()
+
+    private fun loadImageCategories(): ImageCategories =
+        ImageCategories(
+            categories = imagesDirectories,
+            packageName = packageName,
+        )
+}

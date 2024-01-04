@@ -1,5 +1,3 @@
-import com.vanniktech.maven.publish.SonatypeHost
-
 /*
  * Copyright 2024 Sergio Belda
  *
@@ -16,25 +14,11 @@ import com.vanniktech.maven.publish.SonatypeHost
  * limitations under the License.
  */
 
-plugins {
-    `kotlin-dsl`
-    alias(libs.plugins.vanniktechMavenPublish)
-    id("dev.sergiobelda.compose.vectorize.spotless")
-}
+package dev.sergiobelda.compose.vectorize.generator
 
-group = "dev.sergiobelda.compose.vectorize"
-version = libs.versions.composeVectorize.get()
+import java.io.File
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
-
-dependencies {
-    implementation(libs.android.gradlePlugin)
-    implementation(libs.kotlin.gradlePlugin)
-    implementation(libs.squareup.kotlinpoet)
-    implementation(libs.xmlpull)
-    implementation(libs.xpp3)
-}
+data class ImageCategories(
+    val categories: List<File>,
+    val packageName: String,
+)

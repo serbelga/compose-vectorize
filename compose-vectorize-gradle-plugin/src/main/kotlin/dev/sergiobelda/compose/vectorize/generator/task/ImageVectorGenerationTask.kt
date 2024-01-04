@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.compose.vectorize.compiler.generator.task
+package dev.sergiobelda.compose.vectorize.generator.task
 
-import dev.sergiobelda.compose.vectorize.compiler.generator.Image
-import dev.sergiobelda.compose.vectorize.compiler.generator.ImageCategories
-import dev.sergiobelda.compose.vectorize.compiler.generator.ImageCategoriesProcessor
-import dev.sergiobelda.compose.vectorize.compiler.generator.ImageCategoriesWriter
-import dev.sergiobelda.compose.vectorize.compiler.generator.ImageProcessor
-import dev.sergiobelda.compose.vectorize.compiler.generator.ImageWriter
+import dev.sergiobelda.compose.vectorize.generator.Image
+import dev.sergiobelda.compose.vectorize.generator.ImageCategories
+import dev.sergiobelda.compose.vectorize.generator.ImageCategoriesProcessor
+import dev.sergiobelda.compose.vectorize.generator.ImageCategoriesWriter
+import dev.sergiobelda.compose.vectorize.generator.ImageProcessor
+import dev.sergiobelda.compose.vectorize.generator.ImageWriter
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.InputFiles

@@ -18,7 +18,6 @@ dependencyResolutionManagement {
 rootProject.name = "compose-vectorize"
 
 include(":compose-vectorize-core")
-include(":compose-vectorize-generator")
 include(":compose-vectorize-gradle-plugin")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

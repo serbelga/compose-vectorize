@@ -17,7 +17,7 @@
 package dev.sergiobelda.compose.vectorize.gradle.plugin
 
 import com.android.build.gradle.BaseExtension
-import dev.sergiobelda.compose.vectorize.compiler.generator.task.ImageVectorGenerationTask
+import dev.sergiobelda.compose.vectorize.generator.task.ImageVectorGenerationTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.provider.Property

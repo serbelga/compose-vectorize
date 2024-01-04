@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.compose.vectorize.compiler.generator
+package dev.sergiobelda.compose.vectorize.generator
 
 /**
  * Represents a image's Kotlin name, image category name, processed XML file name, and XML file content.

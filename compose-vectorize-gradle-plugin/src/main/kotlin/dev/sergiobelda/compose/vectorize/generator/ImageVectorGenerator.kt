@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.compose.vectorize.compiler.generator
+package dev.sergiobelda.compose.vectorize.generator
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -23,10 +23,10 @@ import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.buildCodeBlock
-import dev.sergiobelda.compose.vectorize.compiler.generator.utils.setIndent
-import dev.sergiobelda.compose.vectorize.compiler.generator.vector.FillType
-import dev.sergiobelda.compose.vectorize.compiler.generator.vector.Vector
-import dev.sergiobelda.compose.vectorize.compiler.generator.vector.VectorNode
+import dev.sergiobelda.compose.vectorize.generator.utils.setIndent
+import dev.sergiobelda.compose.vectorize.generator.vector.FillType
+import dev.sergiobelda.compose.vectorize.generator.vector.Vector
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode
 import java.util.Locale
 
 /**

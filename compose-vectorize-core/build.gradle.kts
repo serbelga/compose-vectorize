@@ -1,3 +1,5 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 /*
  * Copyright 2024 Sergio Belda
  *
@@ -72,4 +74,8 @@ android {
     kotlin {
         jvmToolchain(17)
     }
+}
+
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.S01, true)
 }
