@@ -1,8 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("dev.sergiobelda.compose-vectorize")
-    id("dev.sergiobelda.compose-vectorize-spotless")
+    id("dev.sergiobelda.compose.vectorize")
+    id("dev.sergiobelda.compose.vectorize.spotless")
 }
 
 group = "dev.sergiobelda.compose.vectorize"

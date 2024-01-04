@@ -17,7 +17,7 @@
 plugins {
     `kotlin-dsl`
     alias(libs.plugins.gradlePublish)
-    id("dev.sergiobelda.compose-vectorize-spotless")
+    id("dev.sergiobelda.compose.vectorize.spotless")
 }
 
 group = "dev.sergiobelda.compose.vectorize"

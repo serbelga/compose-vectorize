@@ -19,7 +19,7 @@ dependencies {
 gradlePlugin {
     plugins {
         register("spotless") {
-            id = "dev.sergiobelda.compose-vectorize-spotless"
+            id = "dev.sergiobelda.compose.vectorize.spotless"
             implementationClass =
                 "dev.sergiobelda.compose.vectorize.buildlogic.convention.SpotlessConventionPlugin"
         }

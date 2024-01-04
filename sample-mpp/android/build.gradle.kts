@@ -17,7 +17,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlin)
-    id("dev.sergiobelda.compose-vectorize-spotless")
+    id("dev.sergiobelda.compose.vectorize.spotless")
 }
 
 android {

@@ -1,3 +1,5 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 /*
  * Copyright 2024 Sergio Belda
  *
@@ -16,8 +18,8 @@
 
 plugins {
     `kotlin-dsl`
-    alias(libs.plugins.gradlePublish)
-    id("dev.sergiobelda.compose-vectorize-spotless")
+    alias(libs.plugins.vanniktechMavenPublish)
+    id("dev.sergiobelda.compose.vectorize.spotless")
 }
 
 group = "dev.sergiobelda.compose.vectorize"

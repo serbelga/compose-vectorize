@@ -8,12 +8,13 @@ androidGradlePlugin = "8.2.0"
 composeBom = "2023.10.01"
 composeCompiler = "1.5.4"
 composeMultiplatform = "1.5.11"
-composeVectorize = "0.0.1-alpha01"
+composeVectorize = "0.0.1-alpha02"
 gradlePublishGradlePlugin = "1.2.1"
 kotlin = "1.9.20"
 kotlinpoet = "1.15.3"
 ktlint = "0.50.0"
 spotless = "6.22.0"
+vanniktechMavenPublishPlugin = "0.26.0"
 
 [libraries]
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -43,3 +44,4 @@ composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMul
 gradlePublish = { id = "com.gradle.plugin-publish", version.ref = "gradlePublishGradlePlugin" }
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+vanniktechMavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechMavenPublishPlugin" }

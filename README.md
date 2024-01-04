@@ -11,7 +11,7 @@ Converts the XML files located in the `xml-images` folder and creates categories
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("dev.sergiobelda.compose-vectorize")
+    id("dev.sergiobelda.compose.vectorize")
 }
 
 dependencies {
@@ -29,7 +29,7 @@ composeVectorize {
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
-    id("dev.sergiobelda.compose-vectorize")
+    id("dev.sergiobelda.compose.vectorize")
 }
 
 kotlin {
