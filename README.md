@@ -37,7 +37,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(compose.ui)
-                implementation("dev.sergiobelda.compose.vectorize:compose-vectorize-core$VERSION")
+                implementation("dev.sergiobelda.compose.vectorize:compose-vectorize-core:$VERSION")
             }
         }
     }
