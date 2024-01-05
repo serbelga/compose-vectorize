@@ -1,5 +1,7 @@
 # Compose Vectorize
 
+[![Maven Central](https://img.shields.io/maven-central/v/dev.sergiobelda.compose.vectorize/compose-vectorize-core)](https://search.maven.org/search?q=g:dev.sergiobelda.compose.vectorize)
+
 A Kotlin Multiplatform library to generate `compose.ui.graphics.vector.ImageVector` from 
 XML files. This library has the same behavior as AndroidX `material-icons` vector generator.
 
