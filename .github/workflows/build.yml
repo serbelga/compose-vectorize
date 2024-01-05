@@ -32,3 +32,5 @@ jobs:
       run: cd sample && ./gradlew app:assembleDebug && cd ..
     - name: Build android sample-mpp
       run: cd sample-mpp && ./gradlew android:assembleDebug && cd ..
+    - name: Build desktop sample-mpp
+      run: cd sample-mpp && ./gradlew desktop:assemble && cd ..
