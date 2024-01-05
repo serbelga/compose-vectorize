@@ -7,48 +7,10 @@ XML files. This library has the same behavior as AndroidX `material-icons` vecto
 
 Converts the XML files located in the `xml-images` folder and creates categories based on the folder division.
 
-## Android
+## How to Use
 
-```kotlin
-plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("dev.sergiobelda.compose.vectorize")
-}
-
-dependencies {
-    implementation("dev.sergiobelda.compose.vectorize:compose-vectorize-core:$VERSION")
-}
-
-composeVectorize {
-    packageName = "dev.example.myproject" // Custom package name
-}
-```
-
-## Multiplatform
-
-```kotlin
-plugins {
-    kotlin("multiplatform")
-    id("org.jetbrains.compose")
-    id("dev.sergiobelda.compose.vectorize")
-}
-
-kotlin {
-    sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(compose.ui)
-                implementation("dev.sergiobelda.compose.vectorize:compose-vectorize-core:$VERSION")
-            }
-        }
-    }
-}
-
-composeVectorize {
-    packageName = "dev.example.myproject" // Custom package name
-}
-```
+- [Android](https://github.com/serbelga/compose-vectorize/blob/main/docs/android.md)
+- [Multiplatform](https://github.com/serbelga/compose-vectorize/blob/main/docs/multiplatform.md)
 
 ## License
 
