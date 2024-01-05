@@ -51,7 +51,7 @@ class ImageProcessor(
 
     private fun MutableList<Image>.addImages(
         file: File,
-        categoryPath: String = ""
+        categoryPath: String = "",
     ) {
         if (file.isDirectory) {
             val category = categoryPath.plus("${file.name.toKotlinPropertyName()}.")
