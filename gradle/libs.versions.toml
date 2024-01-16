@@ -14,7 +14,7 @@ kotlin = "1.9.20"
 kotlinpoet = "1.15.3"
 ktlint = "0.50.0"
 spotless = "6.22.0"
-vanniktechMavenPublishPlugin = "0.26.0"
+vanniktechMavenPublishPlugin = "0.27.0"
 
 [libraries]
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
