@@ -33,10 +33,13 @@ class Vector(
 sealed class VectorNode {
     class Group(val paths: MutableList<Path> = mutableListOf()) : VectorNode()
     class Path(
-        val strokeAlpha: Float,
         val fillAlpha: Float,
         val fillColor: String,
         val fillType: FillType,
         val nodes: List<PathNode>,
+        val strokeAlpha: Float,
+        val strokeCap: StrokeCap,
+        val strokeColor: String,
+        val strokeWidth: Float,
     ) : VectorNode()
 }

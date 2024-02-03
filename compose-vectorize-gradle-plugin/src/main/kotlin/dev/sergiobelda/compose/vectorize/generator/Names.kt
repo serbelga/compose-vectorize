@@ -34,12 +34,14 @@ enum class PackageNames(val packageName: String) {
 object ClassNames {
     val ImageVector = PackageNames.VectorPackage.className("ImageVector")
     val PathFillType = PackageNames.GraphicsPackage.className("PathFillType", "Companion")
+    val StrokeCapType = PackageNames.GraphicsPackage.className("StrokeCap", "Companion")
 }
 
 /**
  * [MemberName]s used for image generation.
  */
 object MemberNames {
+    val Butt = MemberName(ClassNames.StrokeCapType, "Butt")
     val Color = MemberName(PackageNames.GraphicsPackage.packageName, "Color")
     val EvenOdd = MemberName(ClassNames.PathFillType, "EvenOdd")
     val Group = MemberName(PackageNames.VectorPackage.packageName, "group")
@@ -48,7 +50,9 @@ object MemberNames {
         "imageVector",
     )
     val Path = MemberName(PackageNames.VectorPackage.packageName, "path")
+    val Round = MemberName(ClassNames.StrokeCapType, "Round")
     val SolidColor = MemberName(PackageNames.GraphicsPackage.packageName, "SolidColor")
+    val Square = MemberName(ClassNames.StrokeCapType, "Square")
 }
 
 /**
