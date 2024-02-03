@@ -7,6 +7,8 @@ XML files. This library has the same behavior as AndroidX `material-icons` vecto
 
 Converts the XML files located in the `xml-images` folder and creates categories based on the folder division.
 
+<img src="./docs/assets/diagram.png" alt="Compose Vectorize diagram">
+
 ## How to Use
 
 - [Android](#android)
