@@ -2,12 +2,12 @@
 
 [![Maven Central](https://img.shields.io/maven-central/v/dev.sergiobelda.compose.vectorize/compose-vectorize-core)](https://search.maven.org/search?q=g:dev.sergiobelda.compose.vectorize)
 
-<img src="./docs/assets/diagram.png" alt="Compose Vectorize diagram">
-
 A Kotlin Multiplatform library to generate `compose.ui.graphics.vector.ImageVector` from 
 XML files. This library has the same behavior as AndroidX `material-icons` vector generator.
 
 Converts the XML files located in the `xml-images` folder and creates categories based on the folder division.
+
+<img src="./docs/assets/diagram.png" alt="Compose Vectorize diagram">
 
 ## How to Use
 
