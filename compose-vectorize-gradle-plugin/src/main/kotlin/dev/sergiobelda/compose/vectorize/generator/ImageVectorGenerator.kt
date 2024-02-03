@@ -25,10 +25,17 @@ import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.buildCodeBlock
 import dev.sergiobelda.compose.vectorize.generator.utils.setIndent
-import dev.sergiobelda.compose.vectorize.generator.vector.FillType
 import dev.sergiobelda.compose.vectorize.generator.vector.StrokeCap
+import dev.sergiobelda.compose.vectorize.generator.vector.StrokeJoin
 import dev.sergiobelda.compose.vectorize.generator.vector.Vector
 import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultFillAlpha
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultFillType
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultStrokeAlpha
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultStrokeCap
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultStrokeLineJoin
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultStrokeLineMiter
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultStrokeWidth
 import java.util.Locale
 
 /**
@@ -182,33 +189,46 @@ private fun CodeBlock.Builder.addPath(
     with(path) {
         memberList.add(MemberNames.Path)
 
-        parameterList.add("fill = %M(%M(${fillColor.replace("#", "0x")}))")
-        memberList.add(MemberNames.SolidColor)
-        memberList.add(MemberNames.Color)
-        fillAlpha.takeIf { it != 1f }?.let {
-            parameterList.add("fillAlpha = ${fillAlpha}f")
+        fillAlpha.takeIf { it != DefaultFillAlpha }?.let {
+            parameterList.add("fillAlpha = ${it}f")
         }
-        fillType.takeIf { it != FillType.NonZero }?.let {
-            parameterList.add("pathFillType = %M")
-            memberList.add(MemberNames.EvenOdd)
-        }
-        strokeAlpha.takeIf { it != 1f }?.let {
-            parameterList.add("strokeAlpha = ${strokeAlpha}f")
-        }
-        strokeColor.takeIf { it.isNotEmpty() }?.let {
-            parameterList.add("stroke = %M(%M(${strokeColor.replace("#", "0x")}))")
+        fillColor?.let {
+            parameterList.add("fill = %M(%M(${it.replace("#", "0x")}))")
             memberList.add(MemberNames.SolidColor)
             memberList.add(MemberNames.Color)
         }
-        strokeCap.takeIf { it != StrokeCap.Butt }?.let {
+        fillType.takeIf { it != DefaultFillType }?.let {
+            parameterList.add("pathFillType = %M")
+            memberList.add(MemberNames.PathFillType.EvenOdd)
+        }
+        strokeAlpha.takeIf { it != DefaultStrokeAlpha }?.let {
+            parameterList.add("strokeAlpha = ${it}f")
+        }
+        strokeColor?.let {
+            parameterList.add("stroke = %M(%M(${it.replace("#", "0x")}))")
+            memberList.add(MemberNames.SolidColor)
+            memberList.add(MemberNames.Color)
+        }
+        strokeCap.takeIf { it != DefaultStrokeCap }?.let {
             parameterList.add("strokeLineCap = %M")
             when (strokeCap) {
-                StrokeCap.Round -> memberList.add(MemberNames.Round)
-                StrokeCap.Square -> memberList.add(MemberNames.Square)
-                else -> memberList.add(MemberNames.Butt)
+                StrokeCap.Round -> memberList.add(MemberNames.StrokeCapType.Round)
+                StrokeCap.Square -> memberList.add(MemberNames.StrokeCapType.Square)
+                else -> memberList.add(MemberNames.StrokeCapType.Butt)
             }
         }
-        strokeWidth.takeIf { it != 0f }?.let {
+        strokeLineMiter.takeIf { it != DefaultStrokeLineMiter }?.let {
+            parameterList.add("strokeLineMiter = ${strokeLineMiter}f")
+        }
+        strokeLineJoin.takeIf { it != DefaultStrokeLineJoin }?.let {
+            parameterList.add("strokeLineJoin = %M")
+            when (strokeLineJoin) {
+                StrokeJoin.Bevel -> memberList.add(MemberNames.StrokeJoinType.Bevel)
+                StrokeJoin.Round -> memberList.add(MemberNames.StrokeJoinType.Round)
+                else -> memberList.add(MemberNames.StrokeJoinType.Miter)
+            }
+        }
+        strokeWidth.takeIf { it != DefaultStrokeWidth }?.let {
             parameterList.add("strokeLineWidth = ${strokeWidth}f")
         }
     }

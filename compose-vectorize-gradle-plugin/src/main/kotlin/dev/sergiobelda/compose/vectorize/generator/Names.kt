@@ -35,24 +35,39 @@ object ClassNames {
     val ImageVector = PackageNames.VectorPackage.className("ImageVector")
     val PathFillType = PackageNames.GraphicsPackage.className("PathFillType", "Companion")
     val StrokeCapType = PackageNames.GraphicsPackage.className("StrokeCap", "Companion")
+    val StrokeJoinType = PackageNames.GraphicsPackage.className("StrokeJoin", "Companion")
 }
 
 /**
  * [MemberName]s used for image generation.
  */
 object MemberNames {
-    val Butt = MemberName(ClassNames.StrokeCapType, "Butt")
-    val Color = MemberName(PackageNames.GraphicsPackage.packageName, "Color")
-    val EvenOdd = MemberName(ClassNames.PathFillType, "EvenOdd")
-    val Group = MemberName(PackageNames.VectorPackage.packageName, "group")
     val ImageVector = MemberName(
         PackageNames.ComposeVectorizeCore.packageName,
         "imageVector",
     )
-    val Path = MemberName(PackageNames.VectorPackage.packageName, "path")
-    val Round = MemberName(ClassNames.StrokeCapType, "Round")
+
+    val Color = MemberName(PackageNames.GraphicsPackage.packageName, "Color")
     val SolidColor = MemberName(PackageNames.GraphicsPackage.packageName, "SolidColor")
-    val Square = MemberName(ClassNames.StrokeCapType, "Square")
+
+    val Group = MemberName(PackageNames.VectorPackage.packageName, "group")
+    val Path = MemberName(PackageNames.VectorPackage.packageName, "path")
+
+    object PathFillType {
+        val EvenOdd = MemberName(ClassNames.PathFillType, "EvenOdd")
+    }
+
+    object StrokeCapType {
+        val Butt = MemberName(ClassNames.StrokeCapType, "Butt")
+        val Round = MemberName(ClassNames.StrokeCapType, "Round")
+        val Square = MemberName(ClassNames.StrokeCapType, "Square")
+    }
+
+    object StrokeJoinType {
+        val Bevel = MemberName(ClassNames.StrokeJoinType, "Bevel")
+        val Miter = MemberName(ClassNames.StrokeJoinType, "Miter")
+        val Round = MemberName(ClassNames.StrokeJoinType, "Round")
+    }
 }
 
 /**
