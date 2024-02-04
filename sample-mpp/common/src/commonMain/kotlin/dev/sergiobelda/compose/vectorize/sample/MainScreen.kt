@@ -32,7 +32,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.sergiobelda.compose.vectorize.sample.common.images.Images
-import dev.sergiobelda.compose.vectorize.sample.common.images.icons.Add
+import dev.sergiobelda.compose.vectorize.sample.common.images.icons.outlined.Home
+import dev.sergiobelda.compose.vectorize.sample.common.images.icons.rounded.Home
 import dev.sergiobelda.compose.vectorize.sample.common.images.illustrations.ComposeMultiplatform
 
 @Composable
@@ -43,10 +44,18 @@ fun MainScreen() {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         SampleCard(
-            title = "Images.Icons.Add"
+            title = "Images.Icons.Outlined.Home"
         ) {
             Icon(
-                imageVector = Images.Icons.Add,
+                imageVector = Images.Icons.Outlined.Home,
+                contentDescription = null
+            )
+        }
+        SampleCard(
+            title = "Images.Icons.Rounded.Home"
+        ) {
+            Icon(
+                imageVector = Images.Icons.Rounded.Home,
                 contentDescription = null
             )
         }
