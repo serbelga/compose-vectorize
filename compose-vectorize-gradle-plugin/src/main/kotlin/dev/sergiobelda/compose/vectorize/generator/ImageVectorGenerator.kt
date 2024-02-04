@@ -21,12 +21,21 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.buildCodeBlock
 import dev.sergiobelda.compose.vectorize.generator.utils.setIndent
-import dev.sergiobelda.compose.vectorize.generator.vector.FillType
+import dev.sergiobelda.compose.vectorize.generator.vector.StrokeCap
+import dev.sergiobelda.compose.vectorize.generator.vector.StrokeJoin
 import dev.sergiobelda.compose.vectorize.generator.vector.Vector
 import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultFillAlpha
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultFillType
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultStrokeAlpha
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultStrokeCap
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultStrokeLineJoin
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultStrokeLineMiter
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultStrokeWidth
 import java.util.Locale
 
 /**
@@ -103,17 +112,24 @@ class ImageVectorGenerator(
             )
             .addCode(
                 buildCodeBlock {
-                    val controlFlow = buildString {
-                        append("%N = %M(\n")
-                        append("    name = \"%N\",\n")
-                        append("    width = ${vector.width}f,\n")
-                        append("    height = ${vector.height}f,\n")
-                        append("    viewportWidth = ${vector.viewportWidth}f,\n")
-                        append("    viewportHeight = ${vector.viewportHeight}f\n")
-                        append(")")
+                    val parameterList = listOfNotNull(
+                        "name = \"%N\"",
+                        "width = ${vector.width}f",
+                        "height = ${vector.height}f",
+                        "viewportWidth = ${vector.viewportWidth}f",
+                        "viewportHeight = ${vector.viewportHeight}f",
+                    )
+                    val parameters = if (parameterList.isNotEmpty()) {
+                        parameterList.joinToString(
+                            prefix = "%N = %M(\n\t",
+                            postfix = "\n)",
+                            separator = ",\n\t",
+                        )
+                    } else {
+                        ""
                     }
                     beginControlFlow(
-                        controlFlow,
+                        parameters,
                         backingProperty,
                         MemberNames.ImageVector,
                         imageName,
@@ -167,40 +183,73 @@ private fun CodeBlock.Builder.addPath(
     path: VectorNode.Path,
     pathBody: CodeBlock.Builder.() -> Unit,
 ) {
-    // Only set the fill type if it is EvenOdd - otherwise it will just be the default.
-    val setFillType = path.fillType == FillType.EvenOdd
+    val parameterList = mutableListOf<String>()
+    val memberList = mutableListOf<MemberName>()
 
-    val parameterList = with(path) {
-        listOfNotNull(
-            "fill = %M(%M(${fillColor.replace("#", "0x")}))",
-            "fillAlpha = ${fillAlpha}f".takeIf { fillAlpha != 1f },
-            "strokeAlpha = ${strokeAlpha}f".takeIf { strokeAlpha != 1f },
-            "pathFillType = %M".takeIf { setFillType },
-        )
+    with(path) {
+        memberList.add(MemberNames.Path)
+
+        fillAlpha.takeIf { it != DefaultFillAlpha }?.let {
+            parameterList.add("fillAlpha = ${it}f")
+        }
+        fillColor?.let {
+            parameterList.add("fill = %M(%M(${it.replace("#", "0x")}))")
+            memberList.add(MemberNames.SolidColor)
+            memberList.add(MemberNames.Color)
+        }
+        fillType.takeIf { it != DefaultFillType }?.let {
+            parameterList.add("pathFillType = %M")
+            memberList.add(MemberNames.PathFillType.EvenOdd)
+        }
+        strokeAlpha.takeIf { it != DefaultStrokeAlpha }?.let {
+            parameterList.add("strokeAlpha = ${it}f")
+        }
+        strokeColor?.let {
+            parameterList.add("stroke = %M(%M(${it.replace("#", "0x")}))")
+            memberList.add(MemberNames.SolidColor)
+            memberList.add(MemberNames.Color)
+        }
+        strokeCap.takeIf { it != DefaultStrokeCap }?.let {
+            parameterList.add("strokeLineCap = %M")
+            when (strokeCap) {
+                StrokeCap.Round -> memberList.add(MemberNames.StrokeCapType.Round)
+                StrokeCap.Square -> memberList.add(MemberNames.StrokeCapType.Square)
+                else -> memberList.add(MemberNames.StrokeCapType.Butt)
+            }
+        }
+        strokeLineMiter.takeIf { it != DefaultStrokeLineMiter }?.let {
+            parameterList.add("strokeLineMiter = ${strokeLineMiter}f")
+        }
+        strokeLineJoin.takeIf { it != DefaultStrokeLineJoin }?.let {
+            parameterList.add("strokeLineJoin = %M")
+            when (strokeLineJoin) {
+                StrokeJoin.Bevel -> memberList.add(MemberNames.StrokeJoinType.Bevel)
+                StrokeJoin.Round -> memberList.add(MemberNames.StrokeJoinType.Round)
+                else -> memberList.add(MemberNames.StrokeJoinType.Miter)
+            }
+        }
+        strokeWidth.takeIf { it != DefaultStrokeWidth }?.let {
+            parameterList.add("strokeLineWidth = ${strokeWidth}f")
+        }
     }
+    addPathParameters(parameterList, memberList)
+    pathBody()
+    endControlFlow()
+}
 
+private fun CodeBlock.Builder.addPathParameters(
+    parameterList: List<String>,
+    memberList: List<MemberName>,
+) {
     val parameters = if (parameterList.isNotEmpty()) {
-        parameterList.joinToString(prefix = "(", postfix = ")")
+        parameterList.joinToString(
+            prefix = "(\n\t",
+            postfix = "\n)",
+            separator = ",\n\t",
+        )
     } else {
         ""
     }
 
-    if (setFillType) {
-        beginControlFlow(
-            "%M$parameters",
-            MemberNames.Path,
-            MemberNames.SolidColor,
-            MemberNames.Color,
-            MemberNames.EvenOdd,
-        )
-    } else {
-        beginControlFlow(
-            "%M$parameters",
-            MemberNames.Path,
-            MemberNames.SolidColor,
-            MemberNames.Color,
-        )
-    }
-    pathBody()
-    endControlFlow()
+    beginControlFlow("%M$parameters", *memberList.toTypedArray())
 }

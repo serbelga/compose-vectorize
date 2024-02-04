@@ -18,8 +18,21 @@ package dev.sergiobelda.compose.vectorize.generator
 
 import dev.sergiobelda.compose.vectorize.generator.vector.FillType
 import dev.sergiobelda.compose.vectorize.generator.vector.PathParser
+import dev.sergiobelda.compose.vectorize.generator.vector.StrokeCap
+import dev.sergiobelda.compose.vectorize.generator.vector.StrokeJoin
 import dev.sergiobelda.compose.vectorize.generator.vector.Vector
+import dev.sergiobelda.compose.vectorize.generator.vector.Vector.Companion.DefaultHeight
+import dev.sergiobelda.compose.vectorize.generator.vector.Vector.Companion.DefaultViewportHeight
+import dev.sergiobelda.compose.vectorize.generator.vector.Vector.Companion.DefaultViewportWidth
+import dev.sergiobelda.compose.vectorize.generator.vector.Vector.Companion.DefaultWidth
 import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultFillAlpha
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultFillType
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultStrokeAlpha
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultStrokeCap
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultStrokeLineJoin
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultStrokeLineMiter
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultStrokeWidth
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParser.END_DOCUMENT
 import org.xmlpull.v1.XmlPullParser.END_TAG
@@ -43,10 +56,10 @@ class ImageParser(private val image: Image) {
 
         check(parser.name == VECTOR) { "The start tag must be <vector>!" }
 
-        var width = ""
-        var height = ""
-        var viewportWidth = 0f
-        var viewportHeight = 0f
+        var width = DefaultWidth
+        var height = DefaultHeight
+        var viewportWidth = DefaultViewportWidth
+        var viewportHeight = DefaultViewportHeight
         val nodes = mutableListOf<VectorNode>()
 
         var currentGroup: VectorNode.Group? = null
@@ -56,10 +69,10 @@ class ImageParser(private val image: Image) {
                 START_TAG -> {
                     when (parser.name) {
                         VECTOR -> {
-                            width = parser.getValueAsString(WIDTH).processDpDimension()
-                            height = parser.getValueAsString(HEIGHT).processDpDimension()
-                            viewportWidth = parser.getValueAsFloat(VIEWPORT_WIDTH) ?: 0f
-                            viewportHeight = parser.getValueAsFloat(VIEWPORT_HEIGHT) ?: 0f
+                            width = parser.getValueAsString(WIDTH)?.processDpDimension() ?: DefaultWidth
+                            height = parser.getValueAsString(HEIGHT)?.processDpDimension() ?: DefaultHeight
+                            viewportWidth = parser.getValueAsFloat(VIEWPORT_WIDTH) ?: DefaultViewportWidth
+                            viewportHeight = parser.getValueAsFloat(VIEWPORT_HEIGHT) ?: DefaultViewportHeight
                         }
 
                         PATH -> {
@@ -68,21 +81,40 @@ class ImageParser(private val image: Image) {
                                 PATH_DATA,
                             )
                             val fillAlpha = parser.getValueAsFloat(FILL_ALPHA)
-                            val strokeAlpha = parser.getValueAsFloat(STROKE_ALPHA)
-                            val fillColor = parser.getValueAsString(FILL_COLOR).processFillColor()
-
+                            val fillColor = parser.getValueAsString(FILL_COLOR)?.processColor()
                             val fillType = when (parser.getAttributeValue(null, FILL_TYPE)) {
                                 // evenOdd and nonZero are the only supported values here, where
                                 // nonZero is the default if no values are defined.
                                 EVEN_ODD -> FillType.EvenOdd
-                                else -> FillType.NonZero
+                                else -> DefaultFillType
                             }
+                            val strokeAlpha = parser.getValueAsFloat(STROKE_ALPHA)
+                            val strokeCap = when (parser.getAttributeValue(null, STROKE_LINE_CAP)) {
+                                ROUND -> StrokeCap.Round
+                                SQUARE -> StrokeCap.Square
+                                else -> DefaultStrokeCap
+                            }
+                            val strokeColor = parser.getValueAsString(STROKE_COLOR)?.processColor()
+                            val strokeLineJoin =
+                                when (parser.getAttributeValue(null, STROKE_LINE_JOIN)) {
+                                    BEVEL -> StrokeJoin.Bevel
+                                    ROUND -> StrokeJoin.Round
+                                    else -> DefaultStrokeLineJoin
+                                }
+                            val strokeMiterLimit = parser.getValueAsFloat(STROKE_MITER_LIMIT)
+                            val strokeWidth = parser.getValueAsFloat(STROKE_WIDTH)
+
                             val path = VectorNode.Path(
-                                strokeAlpha = strokeAlpha ?: 1f,
-                                fillAlpha = fillAlpha ?: 1f,
-                                fillColor = fillColor.uppercase(),
+                                fillAlpha = fillAlpha ?: DefaultFillAlpha,
+                                fillColor = fillColor?.uppercase(),
                                 fillType = fillType,
                                 nodes = PathParser.parsePathString(pathData),
+                                strokeAlpha = strokeAlpha ?: DefaultStrokeAlpha,
+                                strokeCap = strokeCap,
+                                strokeColor = strokeColor,
+                                strokeLineMiter = strokeMiterLimit ?: DefaultStrokeLineMiter,
+                                strokeLineJoin = strokeLineJoin,
+                                strokeWidth = strokeWidth ?: DefaultStrokeWidth,
                             )
                             if (currentGroup != null) {
                                 currentGroup.paths.add(path)
@@ -124,8 +156,8 @@ private fun XmlPullParser.getValueAsFloat(name: String): Float? =
 /**
  * @return the string value for the attribute [name], or null if it couldn't be found
  */
-private fun XmlPullParser.getValueAsString(name: String): String =
-    getAttributeValue(null, name)
+private fun XmlPullParser.getValueAsString(name: String): String? =
+    getAttributeValue(null, name)?.toString()
 
 private fun XmlPullParser.seekToStartTag(): XmlPullParser {
     var type = next()
@@ -145,7 +177,7 @@ private fun XmlPullParser.isAtEnd() =
 private fun String.processDpDimension(): String =
     this.replace("dp", "")
 
-private fun String.processFillColor(): String {
+private fun String.processColor(): String {
     val diff = ARGB_HEXADECIMAL_COLOR_LENGTH - this.length
     return if (diff > 0) {
         this.replace("#", "#${"F".repeat(diff)}")
@@ -169,9 +201,17 @@ private const val FILL_TYPE = "android:fillType"
 private const val HEIGHT = "android:height"
 private const val PATH_DATA = "android:pathData"
 private const val STROKE_ALPHA = "android:strokeAlpha"
+private const val STROKE_COLOR = "android:strokeColor"
+private const val STROKE_LINE_CAP = "android:strokeLineCap"
+private const val STROKE_LINE_JOIN = "android:strokeLineJoin"
+private const val STROKE_MITER_LIMIT = "android:strokeMiterLimit"
+private const val STROKE_WIDTH = "android:strokeWidth"
 private const val VIEWPORT_HEIGHT = "android:viewportHeight"
 private const val VIEWPORT_WIDTH = "android:viewportWidth"
 private const val WIDTH = "android:width"
 
 // XML attribute values
+private const val BEVEL = "bevel"
 private const val EVEN_ODD = "evenOdd"
+private const val ROUND = "round"
+private const val SQUARE = "square"

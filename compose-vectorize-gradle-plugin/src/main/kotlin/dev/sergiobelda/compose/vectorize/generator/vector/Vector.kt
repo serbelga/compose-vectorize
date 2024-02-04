@@ -28,15 +28,38 @@ class Vector(
     val viewportWidth: Float,
     val viewportHeight: Float,
     val nodes: List<VectorNode>,
-)
+) {
+    companion object {
+        const val DefaultWidth = "24.0"
+        const val DefaultHeight = "24.0"
+        const val DefaultViewportWidth = 24f
+        const val DefaultViewportHeight = 24f
+    }
+}
 
 sealed class VectorNode {
     class Group(val paths: MutableList<Path> = mutableListOf()) : VectorNode()
     class Path(
-        val strokeAlpha: Float,
         val fillAlpha: Float,
-        val fillColor: String,
+        val fillColor: String?,
         val fillType: FillType,
         val nodes: List<PathNode>,
-    ) : VectorNode()
+        val strokeAlpha: Float,
+        val strokeCap: StrokeCap,
+        val strokeColor: String?,
+        val strokeLineJoin: StrokeJoin,
+        val strokeLineMiter: Float,
+        val strokeWidth: Float,
+    ) : VectorNode() {
+
+        companion object {
+            const val DefaultFillAlpha = 1.0f
+            val DefaultFillType = FillType.NonZero
+            const val DefaultStrokeAlpha = 1.0f
+            val DefaultStrokeCap = StrokeCap.Butt
+            val DefaultStrokeLineJoin = StrokeJoin.Miter
+            const val DefaultStrokeLineMiter = 4.0f
+            const val DefaultStrokeWidth = 0.0f
+        }
+    }
 }
