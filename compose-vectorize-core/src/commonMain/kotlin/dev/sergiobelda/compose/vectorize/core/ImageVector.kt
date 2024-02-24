@@ -25,6 +25,7 @@ inline fun imageVector(
     height: Float,
     viewportWidth: Float,
     viewportHeight: Float,
+    autoMirror: Boolean,
     block: ImageVector.Builder.() -> ImageVector.Builder,
 ): ImageVector = ImageVector.Builder(
     name = name,
@@ -32,4 +33,5 @@ inline fun imageVector(
     defaultHeight = height.dp,
     viewportWidth = viewportWidth,
     viewportHeight = viewportHeight,
+    autoMirror = autoMirror,
 ).block().build()

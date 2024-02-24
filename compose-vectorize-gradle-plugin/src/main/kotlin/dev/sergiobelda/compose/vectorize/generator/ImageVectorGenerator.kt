@@ -118,6 +118,7 @@ class ImageVectorGenerator(
                         "height = ${vector.height}f",
                         "viewportWidth = ${vector.viewportWidth}f",
                         "viewportHeight = ${vector.viewportHeight}f",
+                        "autoMirror = ${vector.autoMirror}",
                     )
                     val parameters = if (parameterList.isNotEmpty()) {
                         parameterList.joinToString(

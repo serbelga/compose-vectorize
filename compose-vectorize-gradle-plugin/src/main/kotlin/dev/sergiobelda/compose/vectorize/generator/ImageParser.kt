@@ -21,6 +21,7 @@ import dev.sergiobelda.compose.vectorize.generator.vector.PathParser
 import dev.sergiobelda.compose.vectorize.generator.vector.StrokeCap
 import dev.sergiobelda.compose.vectorize.generator.vector.StrokeJoin
 import dev.sergiobelda.compose.vectorize.generator.vector.Vector
+import dev.sergiobelda.compose.vectorize.generator.vector.Vector.Companion.DefaultAutoMirror
 import dev.sergiobelda.compose.vectorize.generator.vector.Vector.Companion.DefaultHeight
 import dev.sergiobelda.compose.vectorize.generator.vector.Vector.Companion.DefaultViewportHeight
 import dev.sergiobelda.compose.vectorize.generator.vector.Vector.Companion.DefaultViewportWidth
@@ -60,6 +61,7 @@ class ImageParser(private val image: Image) {
         var height = DefaultHeight
         var viewportWidth = DefaultViewportWidth
         var viewportHeight = DefaultViewportHeight
+        var autoMirror = DefaultAutoMirror
         val nodes = mutableListOf<VectorNode>()
 
         var currentGroup: VectorNode.Group? = null
@@ -73,6 +75,7 @@ class ImageParser(private val image: Image) {
                             height = parser.getValueAsString(HEIGHT)?.processDpDimension() ?: DefaultHeight
                             viewportWidth = parser.getValueAsFloat(VIEWPORT_WIDTH) ?: DefaultViewportWidth
                             viewportHeight = parser.getValueAsFloat(VIEWPORT_HEIGHT) ?: DefaultViewportHeight
+                            autoMirror = parser.getValueAsString(AUTO_MIRRORED)?.toBoolean() ?: DefaultAutoMirror
                         }
 
                         PATH -> {
@@ -142,6 +145,7 @@ class ImageParser(private val image: Image) {
             height = height,
             viewportWidth = viewportWidth,
             viewportHeight = viewportHeight,
+            autoMirror = autoMirror,
             nodes = nodes,
         )
     }
@@ -195,6 +199,7 @@ private const val GROUP = "group"
 private const val PATH = "path"
 
 // XML attribute names
+private const val AUTO_MIRRORED = "android:autoMirrored"
 private const val FILL_ALPHA = "android:fillAlpha"
 private const val FILL_COLOR = "android:fillColor"
 private const val FILL_TYPE = "android:fillType"
