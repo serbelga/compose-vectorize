@@ -53,6 +53,8 @@ class ImageVectorGenerator(
     private val imageCategoryName: String,
     private val vector: Vector,
 ) {
+    private var isComposable: Boolean = false
+
     /**
      * @return a [FileSpec] representing a Kotlin source file containing the property for this
      * programmatic [vector] representation.
@@ -102,55 +104,52 @@ class ImageVectorGenerator(
         backingProperty: PropertySpec,
         imageName: String,
     ): FunSpec {
-        var isComposable = false
+        val imageVectorCodeBlock = buildCodeBlock {
+            val parameterList = listOfNotNull(
+                "name = \"%N\"",
+                "width = ${vector.width}f",
+                "height = ${vector.height}f",
+                "viewportWidth = ${vector.viewportWidth}f",
+                "viewportHeight = ${vector.viewportHeight}f",
+                "autoMirror = ${vector.autoMirror}",
+            )
+            val parameters = if (parameterList.isNotEmpty()) {
+                parameterList.joinToString(
+                    prefix = "%N = %M(\n\t",
+                    postfix = "\n)",
+                    separator = ",\n\t",
+                )
+            } else {
+                ""
+            }
+            beginControlFlow(
+                parameters,
+                backingProperty,
+                MemberNames.ImageVector,
+                imageName,
+            )
+            vector.nodes.forEach { node ->
+                addVectorNodeCode(node)
+            }
+            endControlFlow()
+        }
         val getter = FunSpec.getterBuilder()
-            .addCode(
+        if (!isComposable) {
+            getter.addCode(
                 buildCodeBlock {
                     beginControlFlow("if (%N != null)", backingProperty)
                     addStatement("return %N!!", backingProperty)
                     endControlFlow()
                 },
             )
-            .addCode(
-                buildCodeBlock {
-                    val parameterList = listOfNotNull(
-                        "name = \"%N\"",
-                        "width = ${vector.width}f",
-                        "height = ${vector.height}f",
-                        "viewportWidth = ${vector.viewportWidth}f",
-                        "viewportHeight = ${vector.viewportHeight}f",
-                        "autoMirror = ${vector.autoMirror}",
-                    )
-                    val parameters = if (parameterList.isNotEmpty()) {
-                        parameterList.joinToString(
-                            prefix = "%N = %M(\n\t",
-                            postfix = "\n)",
-                            separator = ",\n\t",
-                        )
-                    } else {
-                        ""
-                    }
-                    beginControlFlow(
-                        parameters,
-                        backingProperty,
-                        MemberNames.ImageVector,
-                        imageName,
-                    )
-                    vector.nodes.forEach { node ->
-                        val hasComposableCode = addRecursively(node)
-                        if (hasComposableCode) {
-                            isComposable = true
-                        }
-                    }
-                    endControlFlow()
-                },
-            )
-            .addStatement("return %N!!", backingProperty)
-
+        }
+        getter.addCode(
+            imageVectorCodeBlock
+        )
+        getter.addStatement("return %N!!", backingProperty)
         if (isComposable) {
             getter.addAnnotation(AnnotationNames.Composable)
         }
-        getter.parameters
         return getter.build()
     }
 
@@ -162,116 +161,115 @@ class ImageVectorGenerator(
             .initializer("null")
             .build()
     }
-}
 
-/**
- * Recursively adds function calls to construct the given [vectorNode] and its children.
- */
-private fun CodeBlock.Builder.addRecursively(vectorNode: VectorNode): Boolean {
-    return when (vectorNode) {
-        is VectorNode.Group -> {
-            beginControlFlow("%M", MemberNames.Group)
-            vectorNode.paths.forEach { path ->
-                addRecursively(path)
+
+
+    /**
+     * Recursively adds function calls to construct the given [vectorNode] and its children.
+     */
+    private fun CodeBlock.Builder.addVectorNodeCode(vectorNode: VectorNode) {
+        when (vectorNode) {
+            is VectorNode.Group -> {
+                beginControlFlow("%M", MemberNames.Group)
+                vectorNode.paths.forEach { path ->
+                    addVectorNodeCode(path)
+                }
+                endControlFlow()
             }
-            endControlFlow()
-            false
-        }
 
-        is VectorNode.Path -> {
-            addPath(vectorNode) {
-                vectorNode.nodes.forEach { pathNode ->
-                    addStatement(pathNode.asFunctionCall())
+            is VectorNode.Path -> {
+                addPathCode(vectorNode) {
+                    vectorNode.nodes.forEach { pathNode ->
+                        addStatement(pathNode.asFunctionCall())
+                    }
                 }
             }
         }
     }
-}
 
-/**
- * Adds a function call to create the given [path], with [pathBody] containing the commands for
- * the path.
- */
-private fun CodeBlock.Builder.addPath(
-    path: VectorNode.Path,
-    pathBody: CodeBlock.Builder.() -> Unit,
-): Boolean {
-    var hasComposableCode = false
-    val parameterList = mutableListOf<String>()
-    val memberList = mutableListOf<MemberName>()
+    /**
+     * Adds a function call to create the given [path], with [pathBody] containing the commands for
+     * the path.
+     */
+    private fun CodeBlock.Builder.addPathCode(
+        path: VectorNode.Path,
+        pathBody: CodeBlock.Builder.() -> Unit,
+    ) {
+        val parameterList = mutableListOf<String>()
+        val memberList = mutableListOf<MemberName>()
 
-    with(path) {
-        memberList.add(MemberNames.Path)
+        with(path) {
+            memberList.add(MemberNames.Path)
 
-        fillAlpha.takeIf { it != DefaultFillAlpha }?.let {
-            parameterList.add("fillAlpha = ${it}f")
-        }
-        fillColor?.let {
-            if (it.contains("#")) {
-                parameterList.add("fill = %M(%M(${it.replace("#", "0x")}))")
+            fillAlpha.takeIf { it != DefaultFillAlpha }?.let {
+                parameterList.add("fillAlpha = ${it}f")
+            }
+            fillColor?.let {
+                if (it.contains("#")) {
+                    parameterList.add("fill = %M(%M(${it.replace("#", "0x")}))")
+                    memberList.add(MemberNames.SolidColor)
+                    memberList.add(MemberNames.Color)
+                } else {
+                    parameterList.add("fill = %M(%M.${it.replace("?color", "").lowercase()})")
+                    memberList.add(MemberNames.SolidColor)
+                    memberList.add(MemberNames.Material3ColorScheme)
+                    isComposable = true
+                }
+            }
+            fillType.takeIf { it != DefaultFillType }?.let {
+                parameterList.add("pathFillType = %M")
+                memberList.add(MemberNames.PathFillType.EvenOdd)
+            }
+            strokeAlpha.takeIf { it != DefaultStrokeAlpha }?.let {
+                parameterList.add("strokeAlpha = ${it}f")
+            }
+            strokeColor?.let {
+                parameterList.add("stroke = %M(%M(${it.replace("#", "0x")}))")
                 memberList.add(MemberNames.SolidColor)
                 memberList.add(MemberNames.Color)
-            } else {
-                parameterList.add("fill = %M(%M.${it.replace("?color", "").lowercase()})")
-                memberList.add(MemberNames.SolidColor)
-                memberList.add(MemberNames.Material3ColorScheme)
-                hasComposableCode = true
+            }
+            strokeCap.takeIf { it != DefaultStrokeCap }?.let {
+                parameterList.add("strokeLineCap = %M")
+                when (strokeCap) {
+                    StrokeCap.Round -> memberList.add(MemberNames.StrokeCapType.Round)
+                    StrokeCap.Square -> memberList.add(MemberNames.StrokeCapType.Square)
+                    else -> memberList.add(MemberNames.StrokeCapType.Butt)
+                }
+            }
+            strokeLineMiter.takeIf { it != DefaultStrokeLineMiter }?.let {
+                parameterList.add("strokeLineMiter = ${strokeLineMiter}f")
+            }
+            strokeLineJoin.takeIf { it != DefaultStrokeLineJoin }?.let {
+                parameterList.add("strokeLineJoin = %M")
+                when (strokeLineJoin) {
+                    StrokeJoin.Bevel -> memberList.add(MemberNames.StrokeJoinType.Bevel)
+                    StrokeJoin.Round -> memberList.add(MemberNames.StrokeJoinType.Round)
+                    else -> memberList.add(MemberNames.StrokeJoinType.Miter)
+                }
+            }
+            strokeWidth.takeIf { it != DefaultStrokeWidth }?.let {
+                parameterList.add("strokeLineWidth = ${strokeWidth}f")
             }
         }
-        fillType.takeIf { it != DefaultFillType }?.let {
-            parameterList.add("pathFillType = %M")
-            memberList.add(MemberNames.PathFillType.EvenOdd)
-        }
-        strokeAlpha.takeIf { it != DefaultStrokeAlpha }?.let {
-            parameterList.add("strokeAlpha = ${it}f")
-        }
-        strokeColor?.let {
-            parameterList.add("stroke = %M(%M(${it.replace("#", "0x")}))")
-            memberList.add(MemberNames.SolidColor)
-            memberList.add(MemberNames.Color)
-        }
-        strokeCap.takeIf { it != DefaultStrokeCap }?.let {
-            parameterList.add("strokeLineCap = %M")
-            when (strokeCap) {
-                StrokeCap.Round -> memberList.add(MemberNames.StrokeCapType.Round)
-                StrokeCap.Square -> memberList.add(MemberNames.StrokeCapType.Square)
-                else -> memberList.add(MemberNames.StrokeCapType.Butt)
-            }
-        }
-        strokeLineMiter.takeIf { it != DefaultStrokeLineMiter }?.let {
-            parameterList.add("strokeLineMiter = ${strokeLineMiter}f")
-        }
-        strokeLineJoin.takeIf { it != DefaultStrokeLineJoin }?.let {
-            parameterList.add("strokeLineJoin = %M")
-            when (strokeLineJoin) {
-                StrokeJoin.Bevel -> memberList.add(MemberNames.StrokeJoinType.Bevel)
-                StrokeJoin.Round -> memberList.add(MemberNames.StrokeJoinType.Round)
-                else -> memberList.add(MemberNames.StrokeJoinType.Miter)
-            }
-        }
-        strokeWidth.takeIf { it != DefaultStrokeWidth }?.let {
-            parameterList.add("strokeLineWidth = ${strokeWidth}f")
-        }
-    }
-    addPathParameters(parameterList, memberList)
-    pathBody()
-    endControlFlow()
-    return hasComposableCode
-}
-
-private fun CodeBlock.Builder.addPathParameters(
-    parameterList: List<String>,
-    memberList: List<MemberName>,
-) {
-    val parameters = if (parameterList.isNotEmpty()) {
-        parameterList.joinToString(
-            prefix = "(\n\t",
-            postfix = "\n)",
-            separator = ",\n\t",
-        )
-    } else {
-        ""
+        addPathParameters(parameterList, memberList)
+        pathBody()
+        endControlFlow()
     }
 
-    beginControlFlow("%M$parameters", *memberList.toTypedArray())
+    private fun CodeBlock.Builder.addPathParameters(
+        parameterList: List<String>,
+        memberList: List<MemberName>,
+    ) {
+        val parameters = if (parameterList.isNotEmpty()) {
+            parameterList.joinToString(
+                prefix = "(\n\t",
+                postfix = "\n)",
+                separator = ",\n\t",
+            )
+        } else {
+            ""
+        }
+
+        beginControlFlow("%M$parameters", args = memberList.toTypedArray())
+    }
 }
