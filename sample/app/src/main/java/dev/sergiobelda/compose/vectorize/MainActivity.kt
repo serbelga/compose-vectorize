@@ -58,31 +58,31 @@ fun MainScreen() {
             .fillMaxSize()
             .padding(top = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         SampleCard(
-            title = "Images.Icons.Outlined.Home"
+            title = "Images.Icons.Outlined.Home",
         ) {
             Icon(
                 imageVector = Images.Icons.Outlined.Home,
-                contentDescription = null
+                contentDescription = null,
             )
         }
         SampleCard(
-            title = "Images.Icons.Rounded.Home"
+            title = "Images.Icons.Rounded.Home",
         ) {
             Icon(
                 imageVector = Images.Icons.Rounded.Home,
-                contentDescription = null
+                contentDescription = null,
             )
         }
         SampleCard(
-            title = "Images.Illustrations.ComposeMultiplatform"
+            title = "Images.Illustrations.ComposeMultiplatform",
         ) {
             Image(
                 imageVector = Images.Illustrations.ComposeMultiplatform,
                 contentDescription = null,
-                modifier = Modifier.size(120.dp)
+                modifier = Modifier.size(120.dp),
             )
         }
     }
@@ -91,11 +91,12 @@ fun MainScreen() {
 @Composable
 fun SampleCard(
     title: String,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 12.dp)
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp),
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(title)
@@ -103,7 +104,7 @@ fun SampleCard(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(12.dp)
+                    .padding(12.dp),
             ) {
                 content()
             }
