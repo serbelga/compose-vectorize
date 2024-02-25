@@ -27,13 +27,15 @@ class Vector(
     val height: String,
     val viewportWidth: Float,
     val viewportHeight: Float,
+    val autoMirror: Boolean,
     val nodes: List<VectorNode>,
 ) {
     companion object {
-        const val DefaultWidth = "24.0"
-        const val DefaultHeight = "24.0"
-        const val DefaultViewportWidth = 24f
-        const val DefaultViewportHeight = 24f
+        internal const val DefaultAutoMirror = false
+        internal const val DefaultWidth = "24.0"
+        internal const val DefaultHeight = "24.0"
+        internal const val DefaultViewportWidth = 24f
+        internal const val DefaultViewportHeight = 24f
     }
 }
 
