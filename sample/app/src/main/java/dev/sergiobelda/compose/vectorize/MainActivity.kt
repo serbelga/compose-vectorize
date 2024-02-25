@@ -54,7 +54,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen() {
     Column(
-        modifier = Modifier.fillMaxSize().padding(top = 16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -91,12 +93,17 @@ fun SampleCard(
     title: String,
     content: @Composable () -> Unit
 ) {
-    Card(modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp)) {
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 12.dp)
+    ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(title)
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxWidth().padding(12.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp)
             ) {
                 content()
             }

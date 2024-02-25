@@ -102,7 +102,8 @@ class ImageVectorGenerator(
         backingProperty: PropertySpec,
         imageName: String,
     ): FunSpec {
-        return FunSpec.getterBuilder()
+        var isComposable = false
+        val getter = FunSpec.getterBuilder()
             .addCode(
                 buildCodeBlock {
                     beginControlFlow("if (%N != null)", backingProperty)
@@ -135,12 +136,22 @@ class ImageVectorGenerator(
                         MemberNames.ImageVector,
                         imageName,
                     )
-                    vector.nodes.forEach { node -> addRecursively(node) }
+                    vector.nodes.forEach { node ->
+                        val hasComposableCode = addRecursively(node)
+                        if (hasComposableCode) {
+                            isComposable = true
+                        }
+                    }
                     endControlFlow()
                 },
             )
             .addStatement("return %N!!", backingProperty)
-            .build()
+
+        if (isComposable) {
+            getter.addAnnotation(AnnotationNames.Composable)
+        }
+        getter.parameters
+        return getter.build()
     }
 
     private fun backingProperty(name: String): PropertySpec {
@@ -156,14 +167,15 @@ class ImageVectorGenerator(
 /**
  * Recursively adds function calls to construct the given [vectorNode] and its children.
  */
-private fun CodeBlock.Builder.addRecursively(vectorNode: VectorNode) {
-    when (vectorNode) {
+private fun CodeBlock.Builder.addRecursively(vectorNode: VectorNode): Boolean {
+    return when (vectorNode) {
         is VectorNode.Group -> {
             beginControlFlow("%M", MemberNames.Group)
             vectorNode.paths.forEach { path ->
                 addRecursively(path)
             }
             endControlFlow()
+            false
         }
 
         is VectorNode.Path -> {
@@ -183,7 +195,8 @@ private fun CodeBlock.Builder.addRecursively(vectorNode: VectorNode) {
 private fun CodeBlock.Builder.addPath(
     path: VectorNode.Path,
     pathBody: CodeBlock.Builder.() -> Unit,
-) {
+): Boolean {
+    var hasComposableCode = false
     val parameterList = mutableListOf<String>()
     val memberList = mutableListOf<MemberName>()
 
@@ -194,9 +207,16 @@ private fun CodeBlock.Builder.addPath(
             parameterList.add("fillAlpha = ${it}f")
         }
         fillColor?.let {
-            parameterList.add("fill = %M(%M(${it.replace("#", "0x")}))")
-            memberList.add(MemberNames.SolidColor)
-            memberList.add(MemberNames.Color)
+            if (it.contains("#")) {
+                parameterList.add("fill = %M(%M(${it.replace("#", "0x")}))")
+                memberList.add(MemberNames.SolidColor)
+                memberList.add(MemberNames.Color)
+            } else {
+                parameterList.add("fill = %M(%M.${it.replace("?color", "").lowercase()})")
+                memberList.add(MemberNames.SolidColor)
+                memberList.add(MemberNames.Material3ColorScheme)
+                hasComposableCode = true
+            }
         }
         fillType.takeIf { it != DefaultFillType }?.let {
             parameterList.add("pathFillType = %M")
@@ -236,6 +256,7 @@ private fun CodeBlock.Builder.addPath(
     addPathParameters(parameterList, memberList)
     pathBody()
     endControlFlow()
+    return hasComposableCode
 }
 
 private fun CodeBlock.Builder.addPathParameters(

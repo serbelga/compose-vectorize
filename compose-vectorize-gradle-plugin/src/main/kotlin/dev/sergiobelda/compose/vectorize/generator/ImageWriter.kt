@@ -16,6 +16,7 @@
 
 package dev.sergiobelda.compose.vectorize.generator
 
+import dev.sergiobelda.compose.vectorize.generator.imageparser.ImageParser
 import java.io.File
 
 /**

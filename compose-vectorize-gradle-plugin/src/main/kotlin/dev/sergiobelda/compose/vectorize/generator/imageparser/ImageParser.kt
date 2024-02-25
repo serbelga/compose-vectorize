@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.compose.vectorize.generator
+package dev.sergiobelda.compose.vectorize.generator.imageparser
 
+import dev.sergiobelda.compose.vectorize.generator.Image
 import dev.sergiobelda.compose.vectorize.generator.vector.FillType
 import dev.sergiobelda.compose.vectorize.generator.vector.PathParser
 import dev.sergiobelda.compose.vectorize.generator.vector.StrokeCap
@@ -109,7 +110,7 @@ class ImageParser(private val image: Image) {
 
                             val path = VectorNode.Path(
                                 fillAlpha = fillAlpha ?: DefaultFillAlpha,
-                                fillColor = fillColor?.uppercase(),
+                                fillColor = fillColor,
                                 fillType = fillType,
                                 nodes = PathParser.parsePathString(pathData),
                                 strokeAlpha = strokeAlpha ?: DefaultStrokeAlpha,
@@ -177,18 +178,6 @@ private fun XmlPullParser.seekToStartTag(): XmlPullParser {
 
 private fun XmlPullParser.isAtEnd() =
     eventType == END_DOCUMENT || (depth < 1 && eventType == END_TAG)
-
-private fun String.processDpDimension(): String =
-    this.replace("dp", "")
-
-private fun String.processColor(): String {
-    val diff = ARGB_HEXADECIMAL_COLOR_LENGTH - this.length
-    return if (diff > 0) {
-        this.replace("#", "#${"F".repeat(diff)}")
-    } else {
-        this
-    }
-}
 
 private const val ARGB_HEXADECIMAL_COLOR_LENGTH = 9
 
