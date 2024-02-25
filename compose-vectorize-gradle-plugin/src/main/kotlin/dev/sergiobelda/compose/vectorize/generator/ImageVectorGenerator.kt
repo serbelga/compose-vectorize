@@ -133,24 +133,22 @@ class ImageVectorGenerator(
             }
             endControlFlow()
         }
-        val getter = FunSpec.getterBuilder()
-        if (!isComposable) {
-            getter.addCode(
-                buildCodeBlock {
-                    beginControlFlow("if (%N != null)", backingProperty)
-                    addStatement("return %N!!", backingProperty)
-                    endControlFlow()
-                },
-            )
-        }
-        getter.addCode(
-            imageVectorCodeBlock
-        )
-        getter.addStatement("return %N!!", backingProperty)
-        if (isComposable) {
-            getter.addAnnotation(AnnotationNames.Composable)
-        }
-        return getter.build()
+        return FunSpec.getterBuilder().apply {
+            if (!isComposable) {
+                addCode(
+                    buildCodeBlock {
+                        beginControlFlow("if (%N != null)", backingProperty)
+                        addStatement("return %N!!", backingProperty)
+                        endControlFlow()
+                    },
+                )
+            }
+            addCode(imageVectorCodeBlock)
+            addStatement("return %N!!", backingProperty)
+            if (isComposable) {
+                addAnnotation(AnnotationNames.Composable)
+            }
+        }.build()
     }
 
     private fun backingProperty(name: String): PropertySpec {
