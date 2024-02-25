@@ -160,8 +160,6 @@ class ImageVectorGenerator(
             .build()
     }
 
-
-
     /**
      * Recursively adds function calls to construct the given [vectorNode] and its children.
      */
