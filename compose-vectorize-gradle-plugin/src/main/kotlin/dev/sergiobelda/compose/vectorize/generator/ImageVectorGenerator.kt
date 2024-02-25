@@ -206,7 +206,7 @@ class ImageVectorGenerator(
                     memberList.add(MemberNames.SolidColor)
                     memberList.add(MemberNames.Color)
                 } else {
-                    parameterList.add("fill = %M(%M.${it.replace("?color", "").lowercase()})")
+                    parameterList.add("fill = %M(%M.${it.replace("?color", "").replaceFirstChar(Char::lowercase)})")
                     memberList.add(MemberNames.SolidColor)
                     memberList.add(MemberNames.Material3ColorScheme)
                     isComposable = true
@@ -220,9 +220,16 @@ class ImageVectorGenerator(
                 parameterList.add("strokeAlpha = ${it}f")
             }
             strokeColor?.let {
-                parameterList.add("stroke = %M(%M(${it.replace("#", "0x")}))")
-                memberList.add(MemberNames.SolidColor)
-                memberList.add(MemberNames.Color)
+                if (it.contains("#")) {
+                    parameterList.add("stroke = %M(%M(${it.replace("#", "0x")}))")
+                    memberList.add(MemberNames.SolidColor)
+                    memberList.add(MemberNames.Color)
+                } else {
+                    parameterList.add("stroke = %M(%M.${it.replace("?color", "").replaceFirstChar(Char::lowercase)})")
+                    memberList.add(MemberNames.SolidColor)
+                    memberList.add(MemberNames.Material3ColorScheme)
+                    isComposable = true
+                }
             }
             strokeCap.takeIf { it != DefaultStrokeCap }?.let {
                 parameterList.add("strokeLineCap = %M")
