@@ -28,6 +28,7 @@ import dev.sergiobelda.compose.vectorize.generator.utils.setIndent
 import dev.sergiobelda.compose.vectorize.generator.vector.StrokeCap
 import dev.sergiobelda.compose.vectorize.generator.vector.StrokeJoin
 import dev.sergiobelda.compose.vectorize.generator.vector.Vector
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorColor
 import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode
 import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultFillAlpha
 import dev.sergiobelda.compose.vectorize.generator.vector.VectorNode.Path.Companion.DefaultFillType
@@ -201,15 +202,19 @@ class ImageVectorGenerator(
                 parameterList.add("fillAlpha = ${it}f")
             }
             fillColor?.let {
-                if (it.contains("#")) {
-                    parameterList.add("fill = %M(%M(${it.replace("#", "0x")}))")
-                    memberList.add(MemberNames.SolidColor)
-                    memberList.add(MemberNames.Color)
-                } else {
-                    parameterList.add("fill = %M(%M.${it.replace("?color", "").replaceFirstChar(Char::lowercase)})")
-                    memberList.add(MemberNames.SolidColor)
-                    memberList.add(MemberNames.Material3ColorScheme)
-                    isComposable = true
+                when (it) {
+                    is VectorColor.Hexadecimal -> {
+                        parameterList.add("fill = %M(%M(${it.processValue()}))")
+                        memberList.add(MemberNames.SolidColor)
+                        memberList.add(MemberNames.Color)
+                    }
+
+                    is VectorColor.Attribute -> {
+                        parameterList.add("fill = %M(%M.${it.processValue()})")
+                        memberList.add(MemberNames.SolidColor)
+                        memberList.add(MemberNames.Material3ColorScheme)
+                        isComposable = true
+                    }
                 }
             }
             fillType.takeIf { it != DefaultFillType }?.let {
@@ -220,15 +225,19 @@ class ImageVectorGenerator(
                 parameterList.add("strokeAlpha = ${it}f")
             }
             strokeColor?.let {
-                if (it.contains("#")) {
-                    parameterList.add("stroke = %M(%M(${it.replace("#", "0x")}))")
-                    memberList.add(MemberNames.SolidColor)
-                    memberList.add(MemberNames.Color)
-                } else {
-                    parameterList.add("stroke = %M(%M.${it.replace("?color", "").replaceFirstChar(Char::lowercase)})")
-                    memberList.add(MemberNames.SolidColor)
-                    memberList.add(MemberNames.Material3ColorScheme)
-                    isComposable = true
+                when (it) {
+                    is VectorColor.Hexadecimal -> {
+                        parameterList.add("stroke = %M(%M(${it.processValue()}))")
+                        memberList.add(MemberNames.SolidColor)
+                        memberList.add(MemberNames.Color)
+                    }
+
+                    is VectorColor.Attribute -> {
+                        parameterList.add("stroke = %M(%M.${it.processValue()})")
+                        memberList.add(MemberNames.SolidColor)
+                        memberList.add(MemberNames.Material3ColorScheme)
+                        isComposable = true
+                    }
                 }
             }
             strokeCap.takeIf { it != DefaultStrokeCap }?.let {
@@ -275,4 +284,10 @@ class ImageVectorGenerator(
 
         beginControlFlow("%M$parameters", args = memberList.toTypedArray())
     }
+
+    private fun VectorColor.Attribute.processValue(): String =
+        this.value.replace("?color", "").replaceFirstChar(Char::lowercase)
+
+    private fun VectorColor.Hexadecimal.processValue(): String =
+        this.value.replace("#", "0x")
 }

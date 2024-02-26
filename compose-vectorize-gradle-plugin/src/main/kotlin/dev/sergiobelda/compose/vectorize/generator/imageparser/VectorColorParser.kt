@@ -16,38 +16,44 @@
 
 package dev.sergiobelda.compose.vectorize.generator.imageparser
 
+import dev.sergiobelda.compose.vectorize.generator.vector.VectorColor
+
 /**
  * Process a color depending on its format:
- * - If is Hexadecimal, it is converted to a ARGB Hexadecimal.
+ * - If is Hexadecimal, it is converted to a ARGB [VectorColor.Hexadecimal].
  * - Is is an Android Attribute, e.g. "?attr/colorPrimary",
- * it is converted to a readable attribute by the Image Vector Generator.
+ * it is converted to a readable [VectorColor.Attribute] by the Image Vector Generator.
  */
-internal fun String.processColor(): String {
+internal fun String.colorValueToVectorColor(): VectorColor {
     return when {
         this.contains(HEXADECIMAL_SIGN) -> {
             val diff = ARGB_HEXADECIMAL_COLOR_LENGTH - this.length
-            if (diff > 0) {
-                // Add as many "F" as needed to complete the hexadecimal color length.
-                // e.g. "#0A0A0A" -> "#FF0A0A0A"
-                this.replace(
-                    HEXADECIMAL_SIGN,
-                    "$HEXADECIMAL_SIGN${"F".repeat(diff)}",
-                ).uppercase()
-            } else {
-                this.uppercase()
-            }
+            VectorColor.Hexadecimal(
+                if (diff > 0) {
+                    // Add as many "F" as needed to complete the hexadecimal color length.
+                    // e.g. "#0A0A0A" -> "#FF0A0A0A"
+                    this.replace(
+                        HEXADECIMAL_SIGN,
+                        "$HEXADECIMAL_SIGN${"F".repeat(diff)}",
+                    ).uppercase()
+                } else {
+                    this.uppercase()
+                },
+            )
         }
         this.contains(ATTRIBUTE_INDICATOR) -> {
-            if (this.contains(ATTRIBUTE_PREFIX)) {
-                // Replace the attribute prefix with the attribute indicator.
-                // e.g. "?attr/colorPrimary" -> "?colorPrimary"
-                this.replace(ATTRIBUTE_PREFIX, ATTRIBUTE_INDICATOR)
-            } else {
-                this
-            }
+            VectorColor.Attribute(
+                if (this.contains(ATTRIBUTE_PREFIX)) {
+                    // Replace the attribute prefix with the attribute indicator.
+                    // e.g. "?attr/colorPrimary" -> "?colorPrimary"
+                    this.replace(ATTRIBUTE_PREFIX, ATTRIBUTE_INDICATOR)
+                } else {
+                    this
+                },
+            )
         }
         else -> {
-            DEFAULT_HEXADECIMAL_COLOR
+            VectorColor.Hexadecimal(DEFAULT_HEXADECIMAL_COLOR)
         }
     }
 }

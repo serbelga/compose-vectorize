@@ -72,11 +72,16 @@ class ImageParser(private val image: Image) {
                 START_TAG -> {
                     when (parser.name) {
                         VECTOR -> {
-                            width = parser.getValueAsString(WIDTH)?.processDpDimension() ?: DefaultWidth
-                            height = parser.getValueAsString(HEIGHT)?.processDpDimension() ?: DefaultHeight
-                            viewportWidth = parser.getValueAsFloat(VIEWPORT_WIDTH) ?: DefaultViewportWidth
-                            viewportHeight = parser.getValueAsFloat(VIEWPORT_HEIGHT) ?: DefaultViewportHeight
-                            autoMirror = parser.getValueAsString(AUTO_MIRRORED)?.toBoolean() ?: DefaultAutoMirror
+                            width =
+                                parser.getValueAsString(WIDTH)?.processDpDimension() ?: DefaultWidth
+                            height = parser.getValueAsString(HEIGHT)?.processDpDimension()
+                                ?: DefaultHeight
+                            viewportWidth =
+                                parser.getValueAsFloat(VIEWPORT_WIDTH) ?: DefaultViewportWidth
+                            viewportHeight =
+                                parser.getValueAsFloat(VIEWPORT_HEIGHT) ?: DefaultViewportHeight
+                            autoMirror = parser.getValueAsString(AUTO_MIRRORED)?.toBoolean()
+                                ?: DefaultAutoMirror
                         }
 
                         PATH -> {
@@ -85,7 +90,8 @@ class ImageParser(private val image: Image) {
                                 PATH_DATA,
                             )
                             val fillAlpha = parser.getValueAsFloat(FILL_ALPHA)
-                            val fillColor = parser.getValueAsString(FILL_COLOR)?.processColor()
+                            val fillColor =
+                                parser.getValueAsString(FILL_COLOR)?.colorValueToVectorColor()
                             val fillType = when (parser.getAttributeValue(null, FILL_TYPE)) {
                                 // evenOdd and nonZero are the only supported values here, where
                                 // nonZero is the default if no values are defined.
@@ -98,7 +104,8 @@ class ImageParser(private val image: Image) {
                                 SQUARE -> StrokeCap.Square
                                 else -> DefaultStrokeCap
                             }
-                            val strokeColor = parser.getValueAsString(STROKE_COLOR)?.processColor()
+                            val strokeColor =
+                                parser.getValueAsString(STROKE_COLOR)?.colorValueToVectorColor()
                             val strokeLineJoin =
                                 when (parser.getAttributeValue(null, STROKE_LINE_JOIN)) {
                                     BEVEL -> StrokeJoin.Bevel

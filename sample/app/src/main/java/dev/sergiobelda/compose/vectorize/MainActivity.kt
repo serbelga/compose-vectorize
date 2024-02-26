@@ -56,7 +56,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
 fun MainScreen() {
     Scaffold { paddingValues ->
@@ -70,7 +69,7 @@ fun MainScreen() {
         ) {
             SampleCard(
                 title = "Images.Icons.Outlined.Home",
-                modifier = Modifier.padding(top = 16.dp)
+                modifier = Modifier.padding(top = 16.dp),
             ) {
                 Icon(
                     imageVector = Images.Icons.Outlined.Home,
@@ -133,4 +132,3 @@ fun SampleCard(
         }
     }
 }
-
