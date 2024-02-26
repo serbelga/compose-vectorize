@@ -16,6 +16,12 @@
 
 package dev.sergiobelda.compose.vectorize.generator.imageparser
 
+/**
+ * Process a color depending on its format:
+ * - If is Hexadecimal, it is converted to a ARGB Hexadecimal.
+ * - Is is an Android Attribute, e.g. "?attr/colorPrimary",
+ * it is converted to a readable attribute by the Image Vector Generator.
+ */
 internal fun String.processColor(): String {
     return when {
         this.contains(HEXADECIMAL_SIGN) -> {
