@@ -40,8 +40,16 @@ class Vector(
 }
 
 sealed class VectorColor(open val value: String) {
-    data class Attribute(override val value: String) : VectorColor(value)
-    data class Hexadecimal(override val value: String) : VectorColor(value)
+    class Attribute(
+        override val value: String
+    ) : VectorColor(value)
+    class Hexadecimal(
+        override val value: String = DefaultHexadecimalColor
+    ) : VectorColor(value) {
+        companion object {
+            private const val DefaultHexadecimalColor = "#FF000000"
+        }
+    }
 }
 
 sealed class VectorNode {

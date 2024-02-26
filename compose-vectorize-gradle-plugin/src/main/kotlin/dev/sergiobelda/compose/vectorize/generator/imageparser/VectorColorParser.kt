@@ -26,7 +26,7 @@ import dev.sergiobelda.compose.vectorize.generator.vector.VectorColor
  */
 internal fun String.colorValueToVectorColor(): VectorColor {
     return when {
-        this.contains(HEXADECIMAL_SIGN) -> {
+        this.startsWith(HEXADECIMAL_SIGN) -> {
             val diff = ARGB_HEXADECIMAL_COLOR_LENGTH - this.length
             VectorColor.Hexadecimal(
                 if (diff > 0) {
@@ -41,25 +41,24 @@ internal fun String.colorValueToVectorColor(): VectorColor {
                 },
             )
         }
-        this.contains(ATTRIBUTE_INDICATOR) -> {
+        this.startsWith(ATTRIBUTE_SIGN) -> {
             VectorColor.Attribute(
-                if (this.contains(ATTRIBUTE_PREFIX)) {
+                if (this.startsWith(ATTRIBUTE_PREFIX)) {
                     // Replace the attribute prefix with the attribute indicator.
                     // e.g. "?attr/colorPrimary" -> "?colorPrimary"
-                    this.replace(ATTRIBUTE_PREFIX, ATTRIBUTE_INDICATOR)
+                    this.replace(ATTRIBUTE_PREFIX, ATTRIBUTE_SIGN)
                 } else {
                     this
                 },
             )
         }
         else -> {
-            VectorColor.Hexadecimal(DEFAULT_HEXADECIMAL_COLOR)
+            VectorColor.Hexadecimal()
         }
     }
 }
 
 private const val ARGB_HEXADECIMAL_COLOR_LENGTH = 9
-private const val DEFAULT_HEXADECIMAL_COLOR = "#FF000000"
-private const val HEXADECIMAL_SIGN = "#"
 private const val ATTRIBUTE_PREFIX = "?attr/"
-private const val ATTRIBUTE_INDICATOR = "?"
+private const val ATTRIBUTE_SIGN = "?"
+private const val HEXADECIMAL_SIGN = "#"
