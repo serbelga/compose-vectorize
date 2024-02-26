@@ -39,16 +39,29 @@ class Vector(
     }
 }
 
+sealed class VectorColor(open val value: String) {
+    class Attribute(
+        override val value: String,
+    ) : VectorColor(value)
+    class Hexadecimal(
+        override val value: String = DefaultHexadecimalColor,
+    ) : VectorColor(value) {
+        companion object {
+            private const val DefaultHexadecimalColor = "#FF000000"
+        }
+    }
+}
+
 sealed class VectorNode {
     class Group(val paths: MutableList<Path> = mutableListOf()) : VectorNode()
     class Path(
         val fillAlpha: Float,
-        val fillColor: String?,
+        val fillColor: VectorColor?,
         val fillType: FillType,
         val nodes: List<PathNode>,
         val strokeAlpha: Float,
         val strokeCap: StrokeCap,
-        val strokeColor: String?,
+        val strokeColor: VectorColor?,
         val strokeLineJoin: StrokeJoin,
         val strokeLineMiter: Float,
         val strokeWidth: Float,

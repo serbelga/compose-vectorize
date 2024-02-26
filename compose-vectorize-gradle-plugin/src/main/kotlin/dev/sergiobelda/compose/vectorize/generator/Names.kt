@@ -25,6 +25,7 @@ import com.squareup.kotlinpoet.MemberName
 enum class PackageNames(val packageName: String) {
     ComposeVectorizeCore("dev.sergiobelda.compose.vectorize.core"),
     GraphicsPackage("androidx.compose.ui.graphics"),
+    Material3Package("androidx.compose.material3"),
     VectorPackage(GraphicsPackage.packageName + ".vector"),
 }
 
@@ -33,15 +34,27 @@ enum class PackageNames(val packageName: String) {
  */
 object ClassNames {
     val ImageVector = PackageNames.VectorPackage.className("ImageVector")
+
     val PathFillType = PackageNames.GraphicsPackage.className("PathFillType", "Companion")
     val StrokeCapType = PackageNames.GraphicsPackage.className("StrokeCap", "Companion")
     val StrokeJoinType = PackageNames.GraphicsPackage.className("StrokeJoin", "Companion")
+
+    val MaterialTheme = PackageNames.Material3Package.className("MaterialTheme")
+}
+
+/**
+ * [ClassName]s used as Annotation for image generation.
+ */
+object AnnotationNames {
+    val Composable = ClassName("androidx.compose.runtime", "Composable")
 }
 
 /**
  * [MemberName]s used for image generation.
  */
 object MemberNames {
+    val Material3ColorScheme = MemberName(ClassNames.MaterialTheme, "colorScheme")
+
     val ImageVector = MemberName(
         PackageNames.ComposeVectorizeCore.packageName,
         "imageVector",

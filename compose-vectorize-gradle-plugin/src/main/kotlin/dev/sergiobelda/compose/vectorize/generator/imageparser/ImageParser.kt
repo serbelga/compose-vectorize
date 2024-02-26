@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.compose.vectorize.generator
+package dev.sergiobelda.compose.vectorize.generator.imageparser
 
+import dev.sergiobelda.compose.vectorize.generator.Image
 import dev.sergiobelda.compose.vectorize.generator.vector.FillType
 import dev.sergiobelda.compose.vectorize.generator.vector.PathParser
 import dev.sergiobelda.compose.vectorize.generator.vector.StrokeCap
@@ -71,11 +72,16 @@ class ImageParser(private val image: Image) {
                 START_TAG -> {
                     when (parser.name) {
                         VECTOR -> {
-                            width = parser.getValueAsString(WIDTH)?.processDpDimension() ?: DefaultWidth
-                            height = parser.getValueAsString(HEIGHT)?.processDpDimension() ?: DefaultHeight
-                            viewportWidth = parser.getValueAsFloat(VIEWPORT_WIDTH) ?: DefaultViewportWidth
-                            viewportHeight = parser.getValueAsFloat(VIEWPORT_HEIGHT) ?: DefaultViewportHeight
-                            autoMirror = parser.getValueAsString(AUTO_MIRRORED)?.toBoolean() ?: DefaultAutoMirror
+                            width =
+                                parser.getValueAsString(WIDTH)?.processDpDimension() ?: DefaultWidth
+                            height = parser.getValueAsString(HEIGHT)?.processDpDimension()
+                                ?: DefaultHeight
+                            viewportWidth =
+                                parser.getValueAsFloat(VIEWPORT_WIDTH) ?: DefaultViewportWidth
+                            viewportHeight =
+                                parser.getValueAsFloat(VIEWPORT_HEIGHT) ?: DefaultViewportHeight
+                            autoMirror = parser.getValueAsString(AUTO_MIRRORED)?.toBoolean()
+                                ?: DefaultAutoMirror
                         }
 
                         PATH -> {
@@ -84,7 +90,8 @@ class ImageParser(private val image: Image) {
                                 PATH_DATA,
                             )
                             val fillAlpha = parser.getValueAsFloat(FILL_ALPHA)
-                            val fillColor = parser.getValueAsString(FILL_COLOR)?.processColor()
+                            val fillColor =
+                                parser.getValueAsString(FILL_COLOR)?.colorValueToVectorColor()
                             val fillType = when (parser.getAttributeValue(null, FILL_TYPE)) {
                                 // evenOdd and nonZero are the only supported values here, where
                                 // nonZero is the default if no values are defined.
@@ -97,7 +104,8 @@ class ImageParser(private val image: Image) {
                                 SQUARE -> StrokeCap.Square
                                 else -> DefaultStrokeCap
                             }
-                            val strokeColor = parser.getValueAsString(STROKE_COLOR)?.processColor()
+                            val strokeColor =
+                                parser.getValueAsString(STROKE_COLOR)?.colorValueToVectorColor()
                             val strokeLineJoin =
                                 when (parser.getAttributeValue(null, STROKE_LINE_JOIN)) {
                                     BEVEL -> StrokeJoin.Bevel
@@ -109,7 +117,7 @@ class ImageParser(private val image: Image) {
 
                             val path = VectorNode.Path(
                                 fillAlpha = fillAlpha ?: DefaultFillAlpha,
-                                fillColor = fillColor?.uppercase(),
+                                fillColor = fillColor,
                                 fillType = fillType,
                                 nodes = PathParser.parsePathString(pathData),
                                 strokeAlpha = strokeAlpha ?: DefaultStrokeAlpha,
@@ -177,18 +185,6 @@ private fun XmlPullParser.seekToStartTag(): XmlPullParser {
 
 private fun XmlPullParser.isAtEnd() =
     eventType == END_DOCUMENT || (depth < 1 && eventType == END_TAG)
-
-private fun String.processDpDimension(): String =
-    this.replace("dp", "")
-
-private fun String.processColor(): String {
-    val diff = ARGB_HEXADECIMAL_COLOR_LENGTH - this.length
-    return if (diff > 0) {
-        this.replace("#", "#${"F".repeat(diff)}")
-    } else {
-        this
-    }
-}
 
 private const val ARGB_HEXADECIMAL_COLOR_LENGTH = 9
 
