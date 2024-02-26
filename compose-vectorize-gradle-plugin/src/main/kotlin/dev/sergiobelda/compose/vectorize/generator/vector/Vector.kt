@@ -41,10 +41,10 @@ class Vector(
 
 sealed class VectorColor(open val value: String) {
     class Attribute(
-        override val value: String
+        override val value: String,
     ) : VectorColor(value)
     class Hexadecimal(
-        override val value: String = DefaultHexadecimalColor
+        override val value: String = DefaultHexadecimalColor,
     ) : VectorColor(value) {
         companion object {
             private const val DefaultHexadecimalColor = "#FF000000"
