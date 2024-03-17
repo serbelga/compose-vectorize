@@ -21,7 +21,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.vanniktechMavenPublish)
-    id("dev.sergiobelda.compose.vectorize.spotless")
+    id("dev.sergiobelda.gradle.spotless")
 }
 
 group = "dev.sergiobelda.compose.vectorize"

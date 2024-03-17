@@ -2,7 +2,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "dev.sergiobelda.compose.vectorize.buildlogic"
+group = "dev.sergiobelda.gradle"
 
 java {
     toolchain {
@@ -19,9 +19,9 @@ dependencies {
 gradlePlugin {
     plugins {
         register("spotless") {
-            id = "dev.sergiobelda.compose.vectorize.spotless"
+            id = "dev.sergiobelda.gradle.spotless"
             implementationClass =
-                "dev.sergiobelda.compose.vectorize.buildlogic.convention.SpotlessConventionPlugin"
+                "dev.sergiobelda.gradle.buildlogic.convention.SpotlessConventionPlugin"
         }
     }
 }
