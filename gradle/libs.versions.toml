@@ -22,8 +22,8 @@ android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", ver
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-compose-composeBom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
-androidx-compose-ui = { module = "androidx.compose.ui:ui-tooling-preview" }
-androidx-compose-uiGraphics = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui" }
+androidx-compose-uiGraphics = { module = "androidx.compose.ui:ui-graphics" }
 androidx-compose-uiTooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-compose-uiToolingPreview = { module = "androidx.compose.ui:ui-tooling-preview" }
 androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "androidCore" }

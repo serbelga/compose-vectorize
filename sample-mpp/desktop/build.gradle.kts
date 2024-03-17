@@ -19,7 +19,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     kotlin("multiplatform")
     alias(libs.plugins.composeMultiplatform)
-    id("dev.sergiobelda.compose.vectorize.spotless")
+    id("dev.sergiobelda.gradle.spotless")
 }
 
 kotlin {

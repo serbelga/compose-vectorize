@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package dev.sergiobelda.compose.vectorize.buildlogic.convention
+package dev.sergiobelda.gradle.buildlogic.convention
 
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.gradle.api.Plugin

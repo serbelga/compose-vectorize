@@ -19,7 +19,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     id("dev.sergiobelda.compose.vectorize")
-    id("dev.sergiobelda.compose.vectorize.spotless")
+    id("dev.sergiobelda.gradle.spotless")
 }
 
 group = "dev.sergiobelda.compose.vectorize.sample.common"
