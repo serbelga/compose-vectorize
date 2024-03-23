@@ -5,7 +5,7 @@
 A Kotlin Multiplatform library to generate `compose.ui.graphics.vector.ImageVector` from
 `.xml` files.
 
-Visit the [project website](https://serbelga.dev/compose-vectorize) for documentation.
+Visit the [project website](https://sergiobelda.dev/compose-vectorize/) for documentation.
 
 ## License
 
