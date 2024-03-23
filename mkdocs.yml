@@ -33,6 +33,7 @@ theme:
   icon:
     logo: material/compare
   font:
+    text: 'Manrope'
     code: 'JetBrains Mono'
   features:
     - content.code.annotate
