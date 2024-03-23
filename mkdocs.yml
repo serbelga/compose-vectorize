@@ -1,0 +1,55 @@
+site_name: Compose Vectorize
+site_description: A Kotlin Multiplatform library to generate compose.ui.graphics.vector.ImageVector from .xml files.
+site_author: 'Sergio Belda'
+site_url: 'https://github.com/serbelga/compose-vectorize'
+edit_uri: 'tree/main/docs/'
+remote_branch: gh-pages
+
+repo_name: 'compose-vectorize'
+repo_url: 'https://github.com/serbelga/compose-vectorize'
+
+docs_dir: docs
+
+nav:
+  - 'Overview': 'index.md'
+  - 'Usage': 'usage.md'
+  - 'Themed Attributes': 'themed-attributes.md'
+
+theme:
+  name: 'material'
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-4
+        name: Switch to dark mode
+      primary: white
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-5
+        name: Switch to light mode
+      primary: black
+  icon:
+    logo: material/compare
+  font:
+    code: 'JetBrains Mono'
+  features:
+    - content.code.annotate
+    - content.code.copy
+    - content.code.select
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
