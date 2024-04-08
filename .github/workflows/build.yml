@@ -28,6 +28,8 @@ jobs:
       run: ./gradlew spotlessCheck
     - name: Run build
       run: ./gradlew build
+    - name: Run screenshot tests
+      run: cd sample && ./gradlew app:verifyPaparazziDebug && cd ..
     - name: Build android sample
       run: cd sample && ./gradlew app:assembleDebug && cd ..
     - name: Build android sample-mpp
