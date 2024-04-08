@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("dev.sergiobelda.compose.vectorize")
     id("dev.sergiobelda.gradle.spotless")
+    alias(libs.plugins.paparazzi)
 }
 
 group = "dev.sergiobelda.compose.vectorize"
