@@ -6,21 +6,21 @@ A Kotlin Multiplatform library to generate `compose.ui.graphics.vector.ImageVect
 
 Visit the [project website](https://sergiobelda.dev/compose-vectorize/) for documentation.
 
-# Usage
+## Usage
 
 Create a folder called `xml-images` in the module folder.
 
 `:module/xml-images`
 
-## Android
+### Android
 
 <img width="332" alt="Captura de pantalla 2024-01-05 a las 16 57 56" src="https://github.com/serbelga/compose-vectorize/assets/26246782/97c4082a-28d8-4009-addd-427d9f893340">
 
-## Multiplatform
+### Multiplatform
 
 <img width="330" alt="Captura de pantalla 2024-01-05 a las 17 10 28" src="https://github.com/serbelga/compose-vectorize/assets/26246782/2c0a380d-2580-4898-b581-560e4b7c6e6b">
 
-## Generate images
+### Generate images
 
 You can manually generate ImageVector for these XML files by calling `gradle generateImages`. This will create a Kotlin file for each XML file containing the ImageVector in the build folder.
 
@@ -37,7 +37,7 @@ Note that automatically a category called "Icons" has been created. A category i
 
 -------------------
 
-# Themed Attributes
+## Themed Attributes
 
 It also supports theme attributes. If you are using theme color attributes, like `?attr/colorPrimary`
 or `?attr/colorSecondary`, they can be converted to Compose `MaterialTheme` tokens, which means that
@@ -64,7 +64,7 @@ you can update illustration colors based on the token values. It is also compati
 
 -------------------
 
-# License
+## License
 
 ```
    Copyright 2024 Sergio Belda
