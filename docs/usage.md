@@ -1,20 +1,14 @@
 # Usage
 
-Create a folder called `xml-images` in the module folder. 
+Create a folder called `xml-images` in the module folder.
+
+`:module/xml-images`
 
 ## Android
-
-For example, if you're using this plugin in your application module called `app`, you need to create a folder inside the app folder.
-
-`app/xml-images`
 
 <img width="332" alt="Captura de pantalla 2024-01-05 a las 16 57 56" src="https://github.com/serbelga/compose-vectorize/assets/26246782/97c4082a-28d8-4009-addd-427d9f893340">
 
 ## Multiplatform
-
-Create a folder called `xml-images` in the module folder. For example:
-
-`common/xml-images`
 
 <img width="330" alt="Captura de pantalla 2024-01-05 a las 17 10 28" src="https://github.com/serbelga/compose-vectorize/assets/26246782/2c0a380d-2580-4898-b581-560e4b7c6e6b">
 
