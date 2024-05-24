@@ -18,6 +18,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     kotlin("multiplatform")
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
     id("dev.sergiobelda.gradle.spotless")
 }

@@ -17,6 +17,7 @@
 plugins {
     kotlin("multiplatform")
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
     id("dev.sergiobelda.compose.vectorize")
     id("dev.sergiobelda.gradle.spotless")

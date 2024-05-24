@@ -22,3 +22,6 @@ local.properties
 ## Xcode 8 and earlier
 *.xcscmblueprint
 *.xccheckout
+/.kotlin/
+/sample-mpp/.kotlin/
+/sample/.kotlin/
