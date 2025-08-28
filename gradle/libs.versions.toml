@@ -1,9 +1,9 @@
 [versions]
 activityCompose = "1.10.1"
-androidCompileSdk = "35"
+androidCompileSdk = "36"
 androidCore = "1.16.0"
 androidMinSdk = "24"
-androidTargetSdk = "35"
+androidTargetSdk = "36"
 androidGradlePlugin = "8.12.1"
 composeBom = "2025.06.01"
 composeMultiplatform = "1.8.2"
