@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.cash.paparazzi.Paparazzi
+import com.android.ide.common.rendering.api.SessionParams
 import dev.sergiobelda.compose.vectorize.sample.common.images.Images
 import dev.sergiobelda.compose.vectorize.sample.common.images.illustrations.ComposeMultiplatform
 import dev.sergiobelda.compose.vectorize.sample.common.images.illustrations.SwipeOptions
@@ -31,6 +32,7 @@ class ScreenshotTest {
     @get:Rule
     val paparazzi = Paparazzi(
         theme = "android:Theme.Material.Light.NoActionBar",
+        renderingMode = SessionParams.RenderingMode.SHRINK,
     )
 
     @Test
