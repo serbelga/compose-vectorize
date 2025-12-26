@@ -31,7 +31,10 @@ object PathParser {
     fun parsePathString(pathData: String): List<PathNode> {
         val nodes = mutableListOf<PathNode>()
 
-        fun addNode(cmd: Char, args: FloatArray) {
+        fun addNode(
+            cmd: Char,
+            args: FloatArray,
+        ) {
             nodes.addAll(cmd.toPathNodes(args))
         }
 
@@ -55,7 +58,10 @@ object PathParser {
         return nodes
     }
 
-    private fun nextStart(s: String, end: Int): Int {
+    private fun nextStart(
+        s: String,
+        end: Int,
+    ): Int {
         var index = end
         var c: Char
 
@@ -97,22 +103,28 @@ object PathParser {
             endPosition = result.endPosition
 
             if (startPosition < endPosition) {
-                results[count++] = java.lang.Float.parseFloat(
-                    s.substring(startPosition, endPosition),
-                )
+                results[count++] =
+                    java.lang.Float.parseFloat(
+                        s.substring(startPosition, endPosition),
+                    )
             }
 
-            startPosition = if (result.endWithNegativeOrDot) {
-                // Keep the '-' or '.' sign with next number.
-                endPosition
-            } else {
-                endPosition + 1
-            }
+            startPosition =
+                if (result.endWithNegativeOrDot) {
+                    // Keep the '-' or '.' sign with next number.
+                    endPosition
+                } else {
+                    endPosition + 1
+                }
         }
         return copyOfRange(results, 0, count)
     }
 
-    private fun copyOfRange(original: FloatArray, start: Int, end: Int): FloatArray {
+    private fun copyOfRange(
+        original: FloatArray,
+        start: Int,
+        end: Int,
+    ): FloatArray {
         if (start > end) {
             throw IllegalArgumentException()
         }
@@ -127,7 +139,11 @@ object PathParser {
         return result
     }
 
-    private fun extract(s: String, start: Int, result: ExtractFloatResult) {
+    private fun extract(
+        s: String,
+        start: Int,
+        result: ExtractFloatResult,
+    ) {
         // Now looking for ' ', ',', '.' or '-' from the start.
         var currentIndex = start
         var foundSeparator = false
@@ -138,15 +154,19 @@ object PathParser {
             val isPrevExponential = isExponential
             isExponential = false
             when (s[currentIndex]) {
-                ' ', ',' -> foundSeparator = true
-                '-' ->
+                ' ', ',' -> {
+                    foundSeparator = true
+                }
+
+                '-' -> {
                     // The negative sign following a 'e' or 'E' is not a separator.
                     if (currentIndex != start && !isPrevExponential) {
                         foundSeparator = true
                         result.endWithNegativeOrDot = true
                     }
+                }
 
-                '.' ->
+                '.' -> {
                     if (!secondDot) {
                         secondDot = true
                     } else {
@@ -154,8 +174,11 @@ object PathParser {
                         foundSeparator = true
                         result.endWithNegativeOrDot = true
                     }
+                }
 
-                'e', 'E' -> isExponential = true
+                'e', 'E' -> {
+                    isExponential = true
+                }
             }
             if (foundSeparator) {
                 break

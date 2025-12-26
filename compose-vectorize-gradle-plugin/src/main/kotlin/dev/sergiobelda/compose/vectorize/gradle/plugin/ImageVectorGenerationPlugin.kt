@@ -37,7 +37,9 @@ open class ImageVectorGenerationPlugin : Plugin<Project> {
             project.extensions.create<ImageVectorGenerationPluginExtension>(EXTENSION_PLUGIN_NAME)
 
         val buildDirectory =
-            project.layout.buildDirectory.asFile.get().resolve(IMAGES_RELATIVE_PATH)
+            project.layout.buildDirectory.asFile
+                .get()
+                .resolve(IMAGES_RELATIVE_PATH)
 
         val generatedSrcMain = project.generatedSrcMain()
 
@@ -45,9 +47,10 @@ open class ImageVectorGenerationPlugin : Plugin<Project> {
             project.registerImageVectorGenerationTask(extension, buildDirectory, generatedSrcMain)
 
         if (project.isMultiplatform) {
-            val sourceSet = project.multiplatformExtension?.sourceSets?.find {
-                it.name == KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME
-            }
+            val sourceSet =
+                project.multiplatformExtension?.sourceSets?.find {
+                    it.name == KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME
+                }
             val generatedSrcMainDirectory = buildDirectory.resolve(generatedSrcMain)
             sourceSet?.kotlin?.srcDir(project.files(generatedSrcMainDirectory).builtBy(task))
         } else {
@@ -55,9 +58,10 @@ open class ImageVectorGenerationPlugin : Plugin<Project> {
                 .matching { it.name.startsWith("compile") && it.name.endsWith("Kotlin") }
                 .configureEach { dependsOn(task) }
 
-            val sourceSet = project.baseExtension?.sourceSets?.find {
-                it.name == SourceSet.MAIN_SOURCE_SET_NAME
-            }
+            val sourceSet =
+                project.baseExtension?.sourceSets?.find {
+                    it.name == SourceSet.MAIN_SOURCE_SET_NAME
+                }
             val generatedSrcMainDirectory = buildDirectory.resolve(generatedSrcMain)
             sourceSet?.kotlin?.srcDir(project.files(generatedSrcMainDirectory).builtBy(task))
         }

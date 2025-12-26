@@ -24,25 +24,26 @@ import java.io.File
  *
  * @property images the list of [Image]s to generate Kotlin files for
  */
-class ImageWriter(private val images: List<Image>) {
+class ImageWriter(
+    private val images: List<Image>,
+) {
     /**
      * Generates images and writes them to [outputSrcDirectory].
      *
      * @param outputSrcDirectory the directory to generate source files in
      */
-    fun generateTo(
-        outputSrcDirectory: File,
-    ) {
+    fun generateTo(outputSrcDirectory: File) {
         images.forEach { image ->
             if (image.fileContent.isNotEmpty()) {
                 val vector = ImageParser(image).parse()
 
-                val fileSpec = ImageVectorGenerator(
-                    image.kotlinName,
-                    image.packageName,
-                    image.categoryName,
-                    vector,
-                ).createFileSpec()
+                val fileSpec =
+                    ImageVectorGenerator(
+                        image.kotlinName,
+                        image.packageName,
+                        image.categoryName,
+                        vector,
+                    ).createFileSpec()
 
                 fileSpec.writeTo(outputSrcDirectory)
             }

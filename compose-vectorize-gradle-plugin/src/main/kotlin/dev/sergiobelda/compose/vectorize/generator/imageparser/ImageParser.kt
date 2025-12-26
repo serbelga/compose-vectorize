@@ -45,16 +45,18 @@ import org.xmlpull.v1.XmlPullParserFactory
 /**
  * Parser that converts [image]s into [Vector]s
  */
-class ImageParser(private val image: Image) {
-
+class ImageParser(
+    private val image: Image,
+) {
     /**
      * @return a [Vector] representing the provided [image].
      */
     fun parse(): Vector {
-        val parser = XmlPullParserFactory.newInstance().newPullParser().apply {
-            setInput(image.fileContent.byteInputStream(), null)
-            seekToStartTag()
-        }
+        val parser =
+            XmlPullParserFactory.newInstance().newPullParser().apply {
+                setInput(image.fileContent.byteInputStream(), null)
+                seekToStartTag()
+            }
 
         check(parser.name == VECTOR) { "The start tag must be <vector>!" }
 
@@ -85,25 +87,29 @@ class ImageParser(private val image: Image) {
                         }
 
                         PATH -> {
-                            val pathData = parser.getAttributeValue(
-                                null,
-                                PATH_DATA,
-                            )
+                            val pathData =
+                                parser.getAttributeValue(
+                                    null,
+                                    PATH_DATA,
+                                )
                             val fillAlpha = parser.getValueAsFloat(FILL_ALPHA)
                             val fillColor =
                                 parser.getValueAsString(FILL_COLOR)?.colorValueToVectorColor()
-                            val fillType = when (parser.getAttributeValue(null, FILL_TYPE)) {
-                                // evenOdd and nonZero are the only supported values here, where
-                                // nonZero is the default if no values are defined.
-                                EVEN_ODD -> FillType.EvenOdd
-                                else -> DefaultFillType
-                            }
+                            val fillType =
+                                when (parser.getAttributeValue(null, FILL_TYPE)) {
+                                    // evenOdd and nonZero are the only supported values here, where
+                                    // nonZero is the default if no values are defined.
+                                    EVEN_ODD -> FillType.EvenOdd
+
+                                    else -> DefaultFillType
+                                }
                             val strokeAlpha = parser.getValueAsFloat(STROKE_ALPHA)
-                            val strokeCap = when (parser.getAttributeValue(null, STROKE_LINE_CAP)) {
-                                ROUND -> StrokeCap.Round
-                                SQUARE -> StrokeCap.Square
-                                else -> DefaultStrokeCap
-                            }
+                            val strokeCap =
+                                when (parser.getAttributeValue(null, STROKE_LINE_CAP)) {
+                                    ROUND -> StrokeCap.Round
+                                    SQUARE -> StrokeCap.Square
+                                    else -> DefaultStrokeCap
+                                }
                             val strokeColor =
                                 parser.getValueAsString(STROKE_COLOR)?.colorValueToVectorColor()
                             val strokeLineJoin =
@@ -115,18 +121,19 @@ class ImageParser(private val image: Image) {
                             val strokeMiterLimit = parser.getValueAsFloat(STROKE_MITER_LIMIT)
                             val strokeWidth = parser.getValueAsFloat(STROKE_WIDTH)
 
-                            val path = VectorNode.Path(
-                                fillAlpha = fillAlpha ?: DefaultFillAlpha,
-                                fillColor = fillColor,
-                                fillType = fillType,
-                                nodes = PathParser.parsePathString(pathData),
-                                strokeAlpha = strokeAlpha ?: DefaultStrokeAlpha,
-                                strokeCap = strokeCap,
-                                strokeColor = strokeColor,
-                                strokeLineMiter = strokeMiterLimit ?: DefaultStrokeLineMiter,
-                                strokeLineJoin = strokeLineJoin,
-                                strokeWidth = strokeWidth ?: DefaultStrokeWidth,
-                            )
+                            val path =
+                                VectorNode.Path(
+                                    fillAlpha = fillAlpha ?: DefaultFillAlpha,
+                                    fillColor = fillColor,
+                                    fillType = fillType,
+                                    nodes = PathParser.parsePathString(pathData),
+                                    strokeAlpha = strokeAlpha ?: DefaultStrokeAlpha,
+                                    strokeCap = strokeCap,
+                                    strokeColor = strokeColor,
+                                    strokeLineMiter = strokeMiterLimit ?: DefaultStrokeLineMiter,
+                                    strokeLineJoin = strokeLineJoin,
+                                    strokeWidth = strokeWidth ?: DefaultStrokeWidth,
+                                )
                             if (currentGroup != null) {
                                 currentGroup.paths.add(path)
                             } else {
@@ -162,14 +169,12 @@ class ImageParser(private val image: Image) {
 /**
  * @return the float value for the attribute [name], or null if it couldn't be found
  */
-private fun XmlPullParser.getValueAsFloat(name: String): Float? =
-    getAttributeValue(null, name)?.toFloatOrNull()
+private fun XmlPullParser.getValueAsFloat(name: String): Float? = getAttributeValue(null, name)?.toFloatOrNull()
 
 /**
  * @return the string value for the attribute [name], or null if it couldn't be found
  */
-private fun XmlPullParser.getValueAsString(name: String): String? =
-    getAttributeValue(null, name)?.toString()
+private fun XmlPullParser.getValueAsString(name: String): String? = getAttributeValue(null, name)?.toString()
 
 private fun XmlPullParser.seekToStartTag(): XmlPullParser {
     var type = next()
@@ -183,8 +188,7 @@ private fun XmlPullParser.seekToStartTag(): XmlPullParser {
     return this
 }
 
-private fun XmlPullParser.isAtEnd() =
-    eventType == END_DOCUMENT || (depth < 1 && eventType == END_TAG)
+private fun XmlPullParser.isAtEnd() = eventType == END_DOCUMENT || (depth < 1 && eventType == END_TAG)
 
 private const val ARGB_HEXADECIMAL_COLOR_LENGTH = 9
 

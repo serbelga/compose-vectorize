@@ -66,15 +66,15 @@ class ImageVectorGenerator(
         val builder = createFileSpecBuilder()
         val backingProperty = getBackingProperty()
         val propertySpecBuilder =
-            PropertySpec.builder(name = imageName, type = ClassNames.ImageVector)
+            PropertySpec
+                .builder(name = imageName, type = ClassNames.ImageVector)
                 .receiver(
                     ClassName(
                         imagePackageName,
                         "Images",
                         imageCategoryName,
                     ),
-                )
-                .getter(
+                ).getter(
                     imageGetter(
                         backingProperty = backingProperty,
                         imageName = imageName,
@@ -105,56 +105,62 @@ class ImageVectorGenerator(
         backingProperty: PropertySpec,
         imageName: String,
     ): FunSpec {
-        val imageVectorCodeBlock = buildCodeBlock {
-            val parameterList = listOfNotNull(
-                "name = \"%N\"",
-                "width = ${vector.width}f",
-                "height = ${vector.height}f",
-                "viewportWidth = ${vector.viewportWidth}f",
-                "viewportHeight = ${vector.viewportHeight}f",
-                "autoMirror = ${vector.autoMirror}",
-            )
-            val parameters = if (parameterList.isNotEmpty()) {
-                parameterList.joinToString(
-                    prefix = "%N = %M(\n\t",
-                    postfix = "\n)",
-                    separator = ",\n\t",
+        val imageVectorCodeBlock =
+            buildCodeBlock {
+                val parameterList =
+                    listOfNotNull(
+                        "name = \"%N\"",
+                        "width = ${vector.width}f",
+                        "height = ${vector.height}f",
+                        "viewportWidth = ${vector.viewportWidth}f",
+                        "viewportHeight = ${vector.viewportHeight}f",
+                        "autoMirror = ${vector.autoMirror}",
+                    )
+                val parameters =
+                    if (parameterList.isNotEmpty()) {
+                        parameterList.joinToString(
+                            prefix = "%N = %M(\n\t",
+                            postfix = "\n)",
+                            separator = ",\n\t",
+                        )
+                    } else {
+                        ""
+                    }
+                beginControlFlow(
+                    parameters,
+                    backingProperty,
+                    MemberNames.ImageVector,
+                    imageName,
                 )
-            } else {
-                ""
+                vector.nodes.forEach { node ->
+                    addVectorNodeCode(node)
+                }
+                endControlFlow()
             }
-            beginControlFlow(
-                parameters,
-                backingProperty,
-                MemberNames.ImageVector,
-                imageName,
-            )
-            vector.nodes.forEach { node ->
-                addVectorNodeCode(node)
-            }
-            endControlFlow()
-        }
-        return FunSpec.getterBuilder().apply {
-            if (!isComposable) {
-                addCode(
-                    buildCodeBlock {
-                        beginControlFlow("if (%N != null)", backingProperty)
-                        addStatement("return %N!!", backingProperty)
-                        endControlFlow()
-                    },
-                )
-            }
-            addCode(imageVectorCodeBlock)
-            addStatement("return %N!!", backingProperty)
-            if (isComposable) {
-                addAnnotation(AnnotationNames.Composable)
-            }
-        }.build()
+        return FunSpec
+            .getterBuilder()
+            .apply {
+                if (!isComposable) {
+                    addCode(
+                        buildCodeBlock {
+                            beginControlFlow("if (%N != null)", backingProperty)
+                            addStatement("return %N!!", backingProperty)
+                            endControlFlow()
+                        },
+                    )
+                }
+                addCode(imageVectorCodeBlock)
+                addStatement("return %N!!", backingProperty)
+                if (isComposable) {
+                    addAnnotation(AnnotationNames.Composable)
+                }
+            }.build()
     }
 
     private fun backingProperty(name: String): PropertySpec {
         val nullableImageVector = ClassNames.ImageVector.copy(nullable = true)
-        return PropertySpec.builder(name = name, type = nullableImageVector)
+        return PropertySpec
+            .builder(name = name, type = nullableImageVector)
             .mutable()
             .addModifiers(KModifier.PRIVATE)
             .initializer("null")
@@ -272,22 +278,21 @@ class ImageVectorGenerator(
         parameterList: List<String>,
         memberList: List<MemberName>,
     ) {
-        val parameters = if (parameterList.isNotEmpty()) {
-            parameterList.joinToString(
-                prefix = "(\n\t",
-                postfix = "\n)",
-                separator = ",\n\t",
-            )
-        } else {
-            ""
-        }
+        val parameters =
+            if (parameterList.isNotEmpty()) {
+                parameterList.joinToString(
+                    prefix = "(\n\t",
+                    postfix = "\n)",
+                    separator = ",\n\t",
+                )
+            } else {
+                ""
+            }
 
         beginControlFlow("%M$parameters", args = memberList.toTypedArray())
     }
 
-    private fun VectorColor.Attribute.processValue(): String =
-        this.value.replace("?color", "").replaceFirstChar(Char::lowercase)
+    private fun VectorColor.Attribute.processValue(): String = this.value.replace("?color", "").replaceFirstChar(Char::lowercase)
 
-    private fun VectorColor.Hexadecimal.processValue(): String =
-        this.value.replace("#", "0x")
+    private fun VectorColor.Hexadecimal.processValue(): String = this.value.replace("#", "0x")
 }

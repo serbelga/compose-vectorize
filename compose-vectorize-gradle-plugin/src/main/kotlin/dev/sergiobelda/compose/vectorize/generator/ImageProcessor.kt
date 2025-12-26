@@ -24,7 +24,6 @@ class ImageProcessor(
     private val packageName: String,
     private val imagesDirectories: List<File>,
 ) {
-
     fun process(): List<Image> = loadImages()
 
     private fun loadImages(): List<Image> {

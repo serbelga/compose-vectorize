@@ -27,11 +27,14 @@ inline fun imageVector(
     viewportHeight: Float,
     autoMirror: Boolean,
     block: ImageVector.Builder.() -> ImageVector.Builder,
-): ImageVector = ImageVector.Builder(
-    name = name,
-    defaultWidth = width.dp,
-    defaultHeight = height.dp,
-    viewportWidth = viewportWidth,
-    viewportHeight = viewportHeight,
-    autoMirror = autoMirror,
-).block().build()
+): ImageVector =
+    ImageVector
+        .Builder(
+            name = name,
+            defaultWidth = width.dp,
+            defaultHeight = height.dp,
+            viewportWidth = viewportWidth,
+            viewportHeight = viewportHeight,
+            autoMirror = autoMirror,
+        ).block()
+        .build()

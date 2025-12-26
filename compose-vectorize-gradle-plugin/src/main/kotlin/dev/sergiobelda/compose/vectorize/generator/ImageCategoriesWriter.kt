@@ -18,13 +18,15 @@ package dev.sergiobelda.compose.vectorize.generator
 
 import java.io.File
 
-class ImageCategoriesWriter(private val imageCategories: ImageCategories) {
-
+class ImageCategoriesWriter(
+    private val imageCategories: ImageCategories,
+) {
     fun generateTo(outputSrcDirectory: File) {
-        val fileSpec = ImageCategoriesGenerator(
-            imageCategoriesPackageName = imageCategories.packageName,
-            categories = imageCategories.categories,
-        ).createFileSpec()
+        val fileSpec =
+            ImageCategoriesGenerator(
+                imageCategoriesPackageName = imageCategories.packageName,
+                categories = imageCategories.categories,
+            ).createFileSpec()
         fileSpec.writeTo(outputSrcDirectory)
     }
 }

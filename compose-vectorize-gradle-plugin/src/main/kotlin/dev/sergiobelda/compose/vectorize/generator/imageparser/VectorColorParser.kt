@@ -24,23 +24,25 @@ import dev.sergiobelda.compose.vectorize.generator.vector.VectorColor
  * - Is is an Android Attribute, e.g. "?attr/colorPrimary",
  * it is converted to a readable [VectorColor.Attribute] by the Image Vector Generator.
  */
-internal fun String.colorValueToVectorColor(): VectorColor {
-    return when {
+internal fun String.colorValueToVectorColor(): VectorColor =
+    when {
         this.startsWith(HEXADECIMAL_SIGN) -> {
             val diff = ARGB_HEXADECIMAL_COLOR_LENGTH - this.length
             VectorColor.Hexadecimal(
                 if (diff > 0) {
                     // Add as many "F" as needed to complete the hexadecimal color length.
                     // e.g. "#0A0A0A" -> "#FF0A0A0A"
-                    this.replace(
-                        HEXADECIMAL_SIGN,
-                        "$HEXADECIMAL_SIGN${"F".repeat(diff)}",
-                    ).uppercase()
+                    this
+                        .replace(
+                            HEXADECIMAL_SIGN,
+                            "$HEXADECIMAL_SIGN${"F".repeat(diff)}",
+                        ).uppercase()
                 } else {
                     this.uppercase()
                 },
             )
         }
+
         this.startsWith(ATTRIBUTE_SIGN) -> {
             VectorColor.Attribute(
                 if (this.startsWith(ATTRIBUTE_PREFIX)) {
@@ -52,11 +54,11 @@ internal fun String.colorValueToVectorColor(): VectorColor {
                 },
             )
         }
+
         else -> {
             VectorColor.Hexadecimal()
         }
     }
-}
 
 private const val ARGB_HEXADECIMAL_COLOR_LENGTH = 9
 private const val ATTRIBUTE_PREFIX = "?attr/"

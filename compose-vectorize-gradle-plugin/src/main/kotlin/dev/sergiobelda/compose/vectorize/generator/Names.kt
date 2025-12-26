@@ -22,7 +22,9 @@ import com.squareup.kotlinpoet.MemberName
 /**
  * Package names used for image generation.
  */
-enum class PackageNames(val packageName: String) {
+enum class PackageNames(
+    val packageName: String,
+) {
     ComposeVectorizeCore("dev.sergiobelda.compose.vectorize.core"),
     GraphicsPackage("androidx.compose.ui.graphics"),
     Material3Package("androidx.compose.material3"),
@@ -55,10 +57,11 @@ object AnnotationNames {
 object MemberNames {
     val Material3ColorScheme = MemberName(ClassNames.MaterialTheme, "colorScheme")
 
-    val ImageVector = MemberName(
-        PackageNames.ComposeVectorizeCore.packageName,
-        "imageVector",
-    )
+    val ImageVector =
+        MemberName(
+            PackageNames.ComposeVectorizeCore.packageName,
+            "imageVector",
+        )
 
     val Color = MemberName(PackageNames.GraphicsPackage.packageName, "Color")
     val SolidColor = MemberName(PackageNames.GraphicsPackage.packageName, "SolidColor")

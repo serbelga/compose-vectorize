@@ -34,14 +34,12 @@ import java.io.File
 
 @CacheableTask
 open class ImageVectorGenerationTask : DefaultTask() {
-
     @PathSensitive(PathSensitivity.RELATIVE)
     @InputFiles
     val imagesDirectory = project.projectDir.resolve("xml-images")
 
     @Internal
-    fun getImageDirectories(): List<File> =
-        imagesDirectory.listFiles()?.filter { it.isDirectory } ?: emptyList()
+    fun getImageDirectories(): List<File> = imagesDirectory.listFiles()?.filter { it.isDirectory } ?: emptyList()
 
     @OutputDirectory
     lateinit var buildDirectory: File

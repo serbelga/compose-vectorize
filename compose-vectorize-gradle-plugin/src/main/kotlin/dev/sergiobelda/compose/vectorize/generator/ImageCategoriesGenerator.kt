@@ -25,7 +25,6 @@ class ImageCategoriesGenerator(
     private val imageCategoriesPackageName: String,
     private val categories: List<File>,
 ) {
-
     fun createFileSpec(): FileSpec {
         val builder = createImagesFileSpecBuilder()
         val imagesType = TypeSpec.objectBuilder(Images)
@@ -36,12 +35,11 @@ class ImageCategoriesGenerator(
         return builder.build()
     }
 
-    private fun createImagesFileSpecBuilder(): FileSpec.Builder {
-        return FileSpec.builder(
+    private fun createImagesFileSpecBuilder(): FileSpec.Builder =
+        FileSpec.builder(
             packageName = imageCategoriesPackageName,
             fileName = Images,
         )
-    }
 
     // TODO: Rename
     private fun TypeSpec.Builder.addImagesCategoriesTypeSpec(files: List<File>): TypeSpec.Builder {
