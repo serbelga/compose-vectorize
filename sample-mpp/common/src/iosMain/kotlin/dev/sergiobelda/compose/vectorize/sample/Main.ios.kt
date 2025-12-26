@@ -19,6 +19,6 @@ package dev.sergiobelda.compose.vectorize.sample
 import androidx.compose.ui.window.ComposeUIViewController
 import platform.UIKit.UIViewController
 
-fun MainViewController(): UIViewController = ComposeUIViewController {
+fun mainViewController(): UIViewController = ComposeUIViewController {
     MainScreen()
 }

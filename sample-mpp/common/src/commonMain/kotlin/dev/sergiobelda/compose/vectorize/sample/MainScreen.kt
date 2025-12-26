@@ -45,16 +45,17 @@ import dev.sergiobelda.compose.vectorize.sample.common.images.illustrations.Swip
 fun MainScreen() {
     Scaffold { paddingValues ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .verticalScroll(rememberScrollState()),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             SampleCard(
                 title = "Images.Icons.Outlined.Home",
-                modifier = Modifier.padding(top = 16.dp)
+                modifier = Modifier.padding(top = 16.dp),
             ) {
                 Icon(
                     imageVector = Images.Icons.Outlined.Home,

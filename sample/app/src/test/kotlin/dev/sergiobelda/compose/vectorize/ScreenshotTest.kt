@@ -30,10 +30,11 @@ import org.junit.Test
 
 class ScreenshotTest {
     @get:Rule
-    val paparazzi = Paparazzi(
-        theme = "android:Theme.Material.Light.NoActionBar",
-        renderingMode = SessionParams.RenderingMode.SHRINK,
-    )
+    val paparazzi =
+        Paparazzi(
+            theme = "android:Theme.Material.Light.NoActionBar",
+            renderingMode = SessionParams.RenderingMode.SHRINK,
+        )
 
     @Test
     fun vectorWithStrokeAttribute() {

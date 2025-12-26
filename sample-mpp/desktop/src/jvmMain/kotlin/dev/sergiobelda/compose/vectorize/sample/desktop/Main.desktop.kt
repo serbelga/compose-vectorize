@@ -25,16 +25,18 @@ import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import dev.sergiobelda.compose.vectorize.sample.MainScreen
 
-fun main() = application {
-    Window(
-        resizable = false,
-        onCloseRequest = ::exitApplication,
-        title = "Compose Vectorize Sample",
-        state = WindowState(
-            size = DpSize(480.dp, 860.dp),
-            position = WindowPosition.Aligned(Alignment.Center),
-        ),
-    ) {
-        MainScreen()
+fun main() =
+    application {
+        Window(
+            resizable = false,
+            onCloseRequest = ::exitApplication,
+            title = "Compose Vectorize Sample",
+            state =
+                WindowState(
+                    size = DpSize(480.dp, 860.dp),
+                    position = WindowPosition.Aligned(Alignment.Center),
+                ),
+        ) {
+            MainScreen()
+        }
     }
-}
