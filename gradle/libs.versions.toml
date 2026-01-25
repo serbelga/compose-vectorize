@@ -13,7 +13,7 @@ kotlin = "2.3.0"
 kotlinpoet = "2.2.0"
 ktlint = "1.8.0"
 paparazzi = "2.0.0-alpha02"
-spotless = "8.1.0"
+spotless = "8.2.0"
 vanniktechMavenPublishPlugin = "0.33.0"
 
 [libraries]
