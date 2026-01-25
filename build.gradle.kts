@@ -3,4 +3,5 @@ plugins {
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.kotlin) apply false
+    alias(deps.plugins.sergiobelda.convention.spotless) apply false
 }
