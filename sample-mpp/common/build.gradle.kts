@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 /*
  * Copyright 2024 Sergio Belda
  *
@@ -16,7 +18,7 @@
 
 plugins {
     kotlin("multiplatform")
-    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.android.kotlinMultiplatformLibrary)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
     id("dev.sergiobelda.compose.vectorize")
@@ -26,7 +28,15 @@ plugins {
 group = "dev.sergiobelda.compose.vectorize.sample.common"
 
 kotlin {
-    androidTarget()
+    androidLibrary {
+        namespace = "dev.sergiobelda.compose.vectorize.sample.common"
+        compileSdk = libs.versions.androidCompileSdk.get().toInt()
+        minSdk = libs.versions.androidMinSdk.get().toInt()
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+
     jvm("desktop")
     listOf(
         iosX64(),
@@ -44,42 +54,16 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(compose.material3)
-                implementation(compose.ui)
-                implementation("dev.sergiobelda.compose.vectorize:compose-vectorize-core")
-            }
+        commonMain.dependencies {
+            implementation(libs.jetbrains.compose.material3)
+            implementation(libs.jetbrains.compose.ui)
+            implementation("dev.sergiobelda.compose.vectorize:compose-vectorize-core")
         }
-        val commonTest by getting
-        val androidMain by getting
-        val androidUnitTest by getting
-        val desktopMain by getting
-        val desktopTest by getting
-        val iosMain by creating
-        val iosTest by creating
-        val jsMain by getting
-        val jsTest by getting
-
         all {
             languageSettings.optIn("kotlin.RequiresOptIn")
         }
     }
 }
-
-android {
-    namespace = "dev.sergiobelda.compose.vectorize.sample.common"
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-    }
-
-    kotlin {
-        jvmToolchain(17)
-    }
-}
-
 composeVectorize {
     packageName = "dev.sergiobelda.compose.vectorize.sample.common.images"
 }

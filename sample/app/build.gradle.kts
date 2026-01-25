@@ -1,13 +1,10 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeCompiler)
     id("dev.sergiobelda.compose.vectorize")
     id("dev.sergiobelda.gradle.spotless")
     alias(libs.plugins.paparazzi)
 }
-
-group = "dev.sergiobelda.compose.vectorize"
 
 android {
     namespace = "dev.sergiobelda.compose.vectorize"
