@@ -174,7 +174,7 @@ private fun XmlPullParser.getValueAsFloat(name: String): Float? = getAttributeVa
 /**
  * @return the string value for the attribute [name], or null if it couldn't be found
  */
-private fun XmlPullParser.getValueAsString(name: String): String? = getAttributeValue(null, name)?.toString()
+private fun XmlPullParser.getValueAsString(name: String): String? = getAttributeValue(null, name)
 
 private fun XmlPullParser.seekToStartTag(): XmlPullParser {
     var type = next()

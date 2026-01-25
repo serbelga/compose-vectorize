@@ -30,14 +30,11 @@ kotlin {
     }
 
     sourceSets {
-        val jsMain by getting {
-            dependencies {
-                implementation(projects.common)
-                implementation(compose.foundation)
-                implementation(compose.ui)
-            }
+        jsMain.dependencies {
+            implementation(projects.common)
+            implementation(libs.jetbrains.compose.foundation)
+            implementation(libs.jetbrains.compose.ui)
         }
-        val jsTest by getting
 
         all {
             languageSettings.optIn("kotlin.RequiresOptIn")
@@ -45,6 +42,4 @@ kotlin {
     }
 }
 
-compose.experimental {
-    web.application {}
-}
+compose.web {}

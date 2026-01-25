@@ -1,4 +1,4 @@
-import com.vanniktech.maven.publish.SonatypeHost
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 /*
  * Copyright 2024 Sergio Belda
@@ -20,7 +20,7 @@ plugins {
     kotlin("multiplatform")
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.android.kotlinMultiplatformLibrary)
     alias(libs.plugins.vanniktechMavenPublish)
     id("dev.sergiobelda.gradle.spotless")
 }
@@ -29,7 +29,15 @@ group = "dev.sergiobelda.compose.vectorize"
 version = libs.versions.composeVectorize.get()
 
 kotlin {
-    androidTarget()
+    androidLibrary {
+        namespace = "dev.sergiobelda.compose.vectorize.core"
+        compileSdk = libs.versions.androidCompileSdk.get().toInt()
+        minSdk = libs.versions.androidMinSdk.get().toInt()
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+
     jvm("desktop")
     iosX64()
     iosArm64()
@@ -40,40 +48,13 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(compose.ui)
-            }
+        commonMain.dependencies {
+            implementation(libs.jetbrains.compose.ui)
         }
-        val commonTest by getting
-        val androidMain by getting
-        val androidUnitTest by getting
-        val desktopMain by getting
-        val desktopTest by getting
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
-        val iosMain by creating
-        val iosTest by creating
-        val jsMain by getting
-        val jsTest by getting
 
         all {
             languageSettings.optIn("kotlin.RequiresOptIn")
         }
-    }
-}
-
-android {
-    namespace = "dev.sergiobelda.compose.vectorize.core"
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-    }
-
-    kotlin {
-        jvmToolchain(17)
     }
 }
 
