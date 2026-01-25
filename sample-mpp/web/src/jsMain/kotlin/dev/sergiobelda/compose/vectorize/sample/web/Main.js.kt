@@ -20,17 +20,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.window.CanvasBasedWindow
+import androidx.compose.ui.window.ComposeViewport
 import dev.sergiobelda.compose.vectorize.sample.MainScreen
 import org.jetbrains.skiko.wasm.onWasmReady
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     onWasmReady {
-        CanvasBasedWindow("Compose Vectorize Sample") {
-            Column(modifier = Modifier.fillMaxSize()) {
-                MainScreen()
+        ComposeViewport(
+            content = {
+                Column(modifier = Modifier.fillMaxSize()) {
+                    MainScreen()
+                }
             }
-        }
+        )
     }
 }
