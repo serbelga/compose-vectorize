@@ -25,7 +25,7 @@ version = libs.versions.composeVectorize.get()
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
