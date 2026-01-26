@@ -17,7 +17,6 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.kotlin)
     id("dev.sergiobelda.gradle.spotless")
 }
 
@@ -48,7 +47,7 @@ android {
         }
     }
     kotlin {
-        jvmToolchain(17)
+        jvmToolchain(21)
     }
     buildFeatures {
         compose = true

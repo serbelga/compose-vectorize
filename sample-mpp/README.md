@@ -6,4 +6,4 @@
 
 ### Run on Web
 
-`./gradlew :web:jsBrowserRun`
+`./gradlew :web:jsBrowserDevelopmentRun`
