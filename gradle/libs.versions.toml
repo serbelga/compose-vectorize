@@ -2,17 +2,19 @@
 activityCompose = "1.12.3"
 androidCompileSdk = "36"
 androidCore = "1.17.0"
+androidGradlePlugin = "9.0.0"
 androidMinSdk = "24"
 androidTargetSdk = "36"
-androidGradlePlugin = "8.13.2"
 composeBom = "2026.01.01"
-composeMultiplatform = "1.9.3"
+composeMultiplatform = "1.10.0"
+composeMultiplatformMaterial3 = "1.9.0"
 composeVectorize = "1.1.0"
 gradlePublishGradlePlugin = "2.0.0"
+jdkVersion = "21"
 kotlin = "2.3.0"
 kotlinpoet = "2.2.0"
 ktlint = "1.8.0"
-paparazzi = "2.0.0-alpha02"
+paparazzi = "2.0.0-SNAPSHOT"
 spotless = "8.2.1"
 vanniktechMavenPublishPlugin = "0.33.0"
 
@@ -28,6 +30,11 @@ androidx-compose-uiTooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-compose-uiToolingPreview = { module = "androidx.compose.ui:ui-tooling-preview" }
 androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "androidCore" }
 
+jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "composeMultiplatform" }
+jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "composeMultiplatformMaterial3" }
+jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "composeMultiplatform" }
+jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "composeMultiplatform" }
+
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
 spotless-gradlePlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
@@ -38,6 +45,7 @@ xpp3 = { module = "xpp3:xpp3", version = "1.1.4c" }
 xmlpull = { module = "xmlpull:xmlpull", version = "1.1.3.4a" }
 
 [plugins]
+android-kotlinMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidGradlePlugin" }
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

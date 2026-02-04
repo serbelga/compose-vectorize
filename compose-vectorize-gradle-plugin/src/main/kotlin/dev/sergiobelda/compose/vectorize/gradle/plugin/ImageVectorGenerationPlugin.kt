@@ -16,7 +16,7 @@
 
 package dev.sergiobelda.compose.vectorize.gradle.plugin
 
-import com.android.build.gradle.BaseExtension
+import com.android.build.api.dsl.CommonExtension
 import dev.sergiobelda.compose.vectorize.generator.task.ImageVectorGenerationTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -59,7 +59,7 @@ open class ImageVectorGenerationPlugin : Plugin<Project> {
                 .configureEach { dependsOn(task) }
 
             val sourceSet =
-                project.baseExtension?.sourceSets?.find {
+                project.commonExtension?.sourceSets?.find {
                     it.name == SourceSet.MAIN_SOURCE_SET_NAME
                 }
             val generatedSrcMainDirectory = buildDirectory.resolve(generatedSrcMain)
@@ -95,8 +95,8 @@ private fun Project.generatedSrcMain(): String =
         "src/main/kotlin"
     }
 
-private val Project.baseExtension
-    get() = extensions.findByType(BaseExtension::class.java)
+private val Project.commonExtension
+    get() = extensions.findByType(CommonExtension::class.java)
 
 private val Project.multiplatformExtension
     get() = extensions.findByType(KotlinMultiplatformExtension::class.java)

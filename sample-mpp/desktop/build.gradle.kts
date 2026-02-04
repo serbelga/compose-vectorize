@@ -27,7 +27,7 @@ kotlin {
     jvm {
         compilations.all {
             kotlin {
-                jvmToolchain(17)
+                jvmToolchain(libs.versions.jdkVersion.get().toInt())
 
                 compilerOptions {
                     optIn.add("kotlin.RequiresOptIn")
@@ -36,13 +36,10 @@ kotlin {
         }
     }
     sourceSets {
-        val jvmMain by getting {
-            dependencies {
-                implementation(projects.common)
-                implementation(compose.desktop.currentOs)
-            }
+        jvmMain.dependencies {
+            implementation(projects.common)
+            implementation(compose.desktop.currentOs)
         }
-        val jvmTest by getting
     }
 }
 

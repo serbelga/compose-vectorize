@@ -35,11 +35,9 @@ plugins {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(compose.ui)
-                implementation("dev.sergiobelda.compose.vectorize:compose-vectorize-core:$VERSION")
-            }
+        commonMain.dependencies {
+            implementation("org.jetbrains.compose.ui:ui:$COMPOSE_MULTIPLATFORM_VERSION")
+            implementation("dev.sergiobelda.compose.vectorize:compose-vectorize-core:$VERSION")
         }
     }
 }
