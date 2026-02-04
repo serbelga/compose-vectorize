@@ -16,7 +16,7 @@ kotlinpoet = "2.2.0"
 ktlint = "1.8.0"
 paparazzi = "2.0.0-SNAPSHOT"
 spotless = "8.2.1"
-vanniktechMavenPublishPlugin = "0.33.0"
+vanniktechMavenPublishPlugin = "0.36.0"
 
 [libraries]
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
