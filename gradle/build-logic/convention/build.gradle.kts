@@ -6,7 +6,7 @@ group = "dev.sergiobelda.gradle"
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(libs.versions.jdkVersion.get().toInt())
     }
 }
 

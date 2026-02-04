@@ -27,7 +27,7 @@ kotlin {
     jvm {
         compilations.all {
             kotlin {
-                jvmToolchain(21)
+                jvmToolchain(libs.versions.jdkVersion.get().toInt())
 
                 compilerOptions {
                     optIn.add("kotlin.RequiresOptIn")
