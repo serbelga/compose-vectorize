@@ -57,7 +57,7 @@ class ImageProcessor(
             file.listFiles()?.forEach { child ->
                 addImages(child, category)
             }
-        } else {
+        } else if (file.extension == "xml") {
             val filename = file.nameWithoutExtension
             val kotlinName = filename.toKotlinPropertyName()
             val fileContent = file.readText()
