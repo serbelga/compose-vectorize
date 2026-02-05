@@ -22,7 +22,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.android.kotlinMultiplatformLibrary)
     alias(libs.plugins.vanniktechMavenPublish)
-    id("dev.sergiobelda.gradle.spotless")
+    alias(deps.plugins.sergiobelda.convention.spotless)
 }
 
 group = "dev.sergiobelda.compose.vectorize"

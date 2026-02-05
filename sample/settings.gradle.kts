@@ -1,5 +1,4 @@
 pluginManagement {
-    includeBuild("../gradle/build-logic")
     repositories {
         google()
         mavenCentral()
@@ -17,6 +16,9 @@ dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
             from(files("../gradle/libs.versions.toml"))
+        }
+        create("deps") {
+            from("dev.sergiobelda.projectconfig.catalog:deps:2026.01.02")
         }
     }
 }

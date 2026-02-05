@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeCompiler)
     id("dev.sergiobelda.compose.vectorize")
-    id("dev.sergiobelda.gradle.spotless")
+    alias(deps.plugins.sergiobelda.convention.spotless)
     alias(libs.plugins.paparazzi)
 }
 
