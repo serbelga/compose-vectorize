@@ -1,5 +1,4 @@
 pluginManagement {
-    includeBuild("gradle/build-logic")
     repositories {
         google()
         mavenCentral()
@@ -12,6 +11,11 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    }
+    versionCatalogs {
+        create("deps") {
+            from("dev.sergiobelda.projectconfig.catalog:deps:2026.01.02")
+        }
     }
 }
 

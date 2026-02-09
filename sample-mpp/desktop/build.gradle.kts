@@ -20,7 +20,7 @@ plugins {
     kotlin("multiplatform")
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
-    id("dev.sergiobelda.gradle.spotless")
+    alias(deps.plugins.sergiobelda.convention.spotless)
 }
 
 kotlin {
