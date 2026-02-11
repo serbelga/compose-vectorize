@@ -18,7 +18,7 @@ dependencyResolutionManagement {
             from(files("../gradle/libs.versions.toml"))
         }
         create("deps") {
-            from("dev.sergiobelda.projectconfig.catalog:deps:2026.02.00")
+            from("dev.sergiobelda.projectconfig.catalog:deps:2026.02.01")
         }
     }
 }
