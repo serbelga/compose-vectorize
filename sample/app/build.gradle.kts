@@ -33,7 +33,7 @@ android {
         }
     }
     kotlin {
-        jvmToolchain(21)
+        jvmToolchain(libs.versions.jdkPaparazzi.get().toInt())
     }
     buildFeatures {
         compose = true

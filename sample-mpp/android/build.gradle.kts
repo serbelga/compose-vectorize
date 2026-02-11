@@ -47,7 +47,7 @@ android {
         }
     }
     kotlin {
-        jvmToolchain(libs.versions.jdkVersion.get().toInt())
+        jvmToolchain(libs.versions.jdk.get().toInt())
     }
     buildFeatures {
         compose = true
