@@ -2,7 +2,7 @@
 activityCompose = "1.12.4"
 androidCompileSdk = "36"
 androidCore = "1.17.0"
-androidGradlePlugin = "9.0.0"
+androidGradlePlugin = "9.0.1"
 androidMinSdk = "24"
 androidTargetSdk = "36"
 composeBom = "2026.02.00"
