@@ -26,5 +26,8 @@ jobs:
           distribution: 'oracle'
           cache: gradle
 
+      - name: Deploy to Gradle Plugin Portal
+        run: ./gradlew compose-vectorize-gradle-plugin:publishPlugins
+
       - name: Deploy to MavenCentral
         run: ./gradlew publishAndReleaseToMavenCentral
