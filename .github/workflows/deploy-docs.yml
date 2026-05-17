@@ -14,7 +14,7 @@ permissions:
 jobs:
   deploy_docs:
 
-    runs-on: macos-15
+    runs-on: macos-26
 
     environment:
       name: github-pages
