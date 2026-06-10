@@ -14,7 +14,7 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("deps") {
-            from("dev.sergiobelda.projectconfig.catalog:deps:2026.04.01")
+            from("dev.sergiobelda.projectconfig.catalog:deps:2026.06.00")
         }
     }
 }
