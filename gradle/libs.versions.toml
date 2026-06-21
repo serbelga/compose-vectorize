@@ -15,7 +15,7 @@ jdkPaparazzi = "21"
 kotlin = "2.4.0"
 kotlinpoet = "2.3.0"
 paparazzi = "2.0.0-SNAPSHOT"
-vanniktechMavenPublishPlugin = "0.36.0"
+vanniktechMavenPublishPlugin = "0.37.0"
 
 [libraries]
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
