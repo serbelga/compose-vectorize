@@ -1,7 +1,7 @@
 [versions]
 activityCompose = "1.13.0"
 androidCompileSdk = "37"
-androidCore = "1.19.0"
+androidCore = "1.19.1"
 androidGradlePlugin = "9.4.1"
 androidMinSdk = "24"
 androidTargetSdk = "37"
