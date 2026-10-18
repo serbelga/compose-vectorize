@@ -28,7 +28,7 @@ plugins {
 group = "dev.sergiobelda.compose.vectorize.sample.common"
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "dev.sergiobelda.compose.vectorize.sample.common"
         compileSdk = deps.versions.android.compileSdk.get().toInt()
         minSdk = deps.versions.android.minSdk.get().toInt()
@@ -36,7 +36,6 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_17)
         }
     }
-
     jvm("desktop")
     listOf(
         iosArm64(),
@@ -47,7 +46,7 @@ kotlin {
             isStatic = true
         }
     }
-    js(IR) {
+    js {
         browser()
         binaries.executable()
     }

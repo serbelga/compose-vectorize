@@ -29,7 +29,7 @@ group = "dev.sergiobelda.compose.vectorize"
 version = libs.versions.composeVectorize.get()
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "dev.sergiobelda.compose.vectorize.core"
         compileSdk = deps.versions.android.compileSdk.get().toInt()
         minSdk = deps.versions.android.minSdk.get().toInt()
@@ -41,7 +41,7 @@ kotlin {
     jvm("desktop")
     iosArm64()
     iosSimulatorArm64()
-    js(IR) {
+    js {
         browser()
         binaries.executable()
     }
