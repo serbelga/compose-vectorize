@@ -30,8 +30,8 @@ group = "dev.sergiobelda.compose.vectorize.sample.common"
 kotlin {
     androidLibrary {
         namespace = "dev.sergiobelda.compose.vectorize.sample.common"
-        compileSdk = libs.versions.androidCompileSdk.get().toInt()
-        minSdk = libs.versions.androidMinSdk.get().toInt()
+        compileSdk = deps.versions.android.compileSdk.get().toInt()
+        minSdk = deps.versions.android.minSdk.get().toInt()
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
