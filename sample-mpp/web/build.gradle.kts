@@ -16,8 +16,8 @@
 
 plugins {
     kotlin("multiplatform")
-    alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.composeMultiplatform)
+    alias(deps.plugins.jetbrains.kotlin.composeCompiler)
+    alias(deps.plugins.jetbrains.compose)
     alias(deps.plugins.sergiobelda.convention.spotless)
 }
 
@@ -32,8 +32,8 @@ kotlin {
     sourceSets {
         jsMain.dependencies {
             implementation(projects.common)
-            implementation(libs.jetbrains.compose.foundation)
-            implementation(libs.jetbrains.compose.ui)
+            implementation(deps.jetbrains.compose.foundation)
+            implementation(deps.jetbrains.compose.ui)
         }
 
         all {

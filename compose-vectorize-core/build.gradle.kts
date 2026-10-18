@@ -18,9 +18,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     kotlin("multiplatform")
-    alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.android.kotlinMultiplatformLibrary)
+    alias(deps.plugins.jetbrains.kotlin.composeCompiler)
+    alias(deps.plugins.jetbrains.compose)
+    alias(deps.plugins.android.kotlinMultiplatformLibrary)
     alias(libs.plugins.vanniktechMavenPublish)
     alias(deps.plugins.sergiobelda.convention.spotless)
 }
@@ -31,8 +31,8 @@ version = libs.versions.composeVectorize.get()
 kotlin {
     androidLibrary {
         namespace = "dev.sergiobelda.compose.vectorize.core"
-        compileSdk = libs.versions.androidCompileSdk.get().toInt()
-        minSdk = libs.versions.androidMinSdk.get().toInt()
+        compileSdk = deps.versions.android.compileSdk.get().toInt()
+        minSdk = deps.versions.android.minSdk.get().toInt()
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
@@ -48,7 +48,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.jetbrains.compose.ui)
+            implementation(deps.jetbrains.compose.ui)
         }
 
         all {

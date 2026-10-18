@@ -18,9 +18,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     kotlin("multiplatform")
-    alias(libs.plugins.android.kotlinMultiplatformLibrary)
-    alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.composeMultiplatform)
+    alias(deps.plugins.android.kotlinMultiplatformLibrary)
+    alias(deps.plugins.jetbrains.kotlin.composeCompiler)
+    alias(deps.plugins.jetbrains.compose)
     id("dev.sergiobelda.compose.vectorize")
     alias(deps.plugins.sergiobelda.convention.spotless)
 }
@@ -54,8 +54,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.jetbrains.compose.material3)
-            implementation(libs.jetbrains.compose.ui)
+            implementation(deps.jetbrains.compose.material3)
+            implementation(deps.jetbrains.compose.ui)
             implementation("dev.sergiobelda.compose.vectorize:compose-vectorize-core")
         }
         all {
