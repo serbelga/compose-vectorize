@@ -30,8 +30,8 @@ java {
 }
 
 dependencies {
-    implementation(libs.android.gradlePlugin)
-    implementation(libs.kotlin.gradlePlugin)
+    implementation(deps.android.gradlePlugin)
+    implementation(deps.jetbrains.kotlin.gradlePlugin)
     implementation(libs.squareup.kotlinpoet)
     implementation(libs.xmlpull)
     implementation(libs.xpp3)
